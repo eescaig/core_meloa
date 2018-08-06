@@ -1,0 +1,77 @@
+<mat-sidenav-container class="catalogue-container">
+    <!-- Sidenav container for the search browser manager -->
+    <!-- TODO: Extract the code below the sidenav to its own component -->
+    <mat-sidenav #cataloguesidenav mode="over" position="start" opened="false" class="catalogue-sidenav">
+        <div class="sidenav-container">
+            <img src="../../../assets/img/layers_400x150.jpg" alt="Sentinel 1 image">
+            <div class="sidenav-description">
+                <h1 class="mat-headline">
+                    <mat-icon class="description-icon">search</mat-icon> <span class="description-text">Catalogue Search</span>
+                </h1>
+            </div>
+            <button class="close-panel-button" mat-mini-fab (click)="cataloguesidenav.close()"> <!-- [color]="'accent'" -->
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+        </div>
+        <mat-tab-group #cataloguetabs class="filters-tab">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon>search</mat-icon>
+                </ng-template>
+                <ng-template matTabContent>
+                    <!-- <gp-catalogue-search [tabGroup]="cataloguetabs"></gp-catalogue-search> -->
+                </ng-template>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon [color]="searchResults === undefined ? '' : 'primary'">
+                        list
+                    </mat-icon>
+                <span class="result-count-info" *ngIf="searchResults !== undefined">
+                    {{searchResults > 99 ? '99+' : searchResults}}
+                </span>
+                </ng-template>
+                <ng-template matTabContent>                
+                    <!-- <gp-results></gp-results> -->
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-sidenav>
+  <!-- Sidenav container for the data package manager -->
+    <!-- <mat-sidenav #datapackagesidenav  mode="over" position="end" opened="false" class="package-manager-sidenav">
+        <gp-data-package-manager [sidenavRef]="datapackagesidenav" *ngIf="isUserAuthenticated"></gp-data-package-manager>
+    </mat-sidenav> -->
+
+  <!-- Main catalogue map window -->
+    <div class="catalogue-window">
+    <app-map></app-map>
+
+    <ul class="catalogue-buttons">
+        <li>
+            <button mat-fab (click)="cataloguesidenav.toggle()" matTooltip="Browse our catalogue" [matTooltipPosition]="'right'">
+                <mat-icon [@rotateIcon]="cataloguesidenav.opened ? 'open' : 'closed'">
+                    {{ cataloguesidenav.opened ? 'close' : 'search' }}</mat-icon>
+            </button>
+        </li>
+        <li>
+            <button mat-fab 
+                *ngIf="false" 
+                (click)="fileChooser.click()" 
+                matTooltip="Upload your data" 
+                [matTooltipPosition]="'right'"
+                [disabled]="true">
+                <mat-icon>cloud_upload</mat-icon>
+            </button>
+            <input #fileChooser type="file" style="visibility:hidden" />
+        </li>
+    </ul>
+    <!-- <button mat-fab *ngIf="isUserAuthenticated" (click)="datapackagesidenav.toggle()" matTooltip="Manage your data packages" [matTooltipPosition]="'left'" class="data-package-toggle">
+        <mat-icon style="color:white" svgIcon="package"></mat-icon>
+    </button> -->
+    <!-- <gp-grid-generator [isUserAuthenticated]="isUserAuthenticated" [currentUser]="currentUser"></gp-grid-generator> -->
+    
+</div>
+
+</mat-sidenav-container>
+<app-footer></app-footer>
+

@@ -1,0 +1,70 @@
+
+.catalogue-sidenav {
+    margin-top: 64px;
+    padding-bottom: 50px;
+    .sidenav-container {
+      position: relative;
+      min-width: 400px;
+      max-width: 400px;
+      max-height: 150px;
+      .sidenav-description {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        height: 75px;
+        width: calc(100% - 40px);
+        background-color: rgba(6,77,97, 0.5);
+        padding: 0px 20px;
+        .description-icon {
+          vertical-align: middle;
+        }
+        .description-text {
+          vertical-align: middle;
+        }
+      }
+      .close-panel-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: #3a9cd6;
+      }
+    }
+    .filters-tab {
+      height: calc(100% - 150px);
+      .result-count-info {
+        font-size: 11px;
+        position: absolute;
+        top: 8px;
+        left: 51%;
+        background-color: #40C4FF;
+        padding: 2px 3px;
+        border-radius: 100%;
+      }
+    }
+}
+.package-manager-sidenav {
+    margin-top: 64px;
+    padding-bottom: 50px;
+    min-width: 400px;
+    max-width: 400px;
+}
+.catalogue-window {
+    app-map {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      height: 100%;
+      width: 100%;
+    }
+    .catalogue-buttons {
+        margin-top: 104px;
+        padding-left: 20px;
+        list-style: none;
+        li {
+          margin-bottom: 10px;
+          button {
+            background-color: #3a9cd6;
+          }
+        }
+    }
+}

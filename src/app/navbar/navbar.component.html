@@ -1,0 +1,19 @@
+<mat-toolbar>
+    <div class="logo-wrapper">
+        <img src="../assets/img/meloa-logo.png" alt="Meloa Logo">
+     </div>
+
+    <span class="nav-spacer"></span>
+    <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+      <button mat-button 
+        class="navbar-button"
+        *ngFor="let siteLink of siteLinks; let i = index" 
+        routerLink="{{siteLink.link}}" 
+        routerLinkActive="navbar-link-active"
+        matTooltip="{{siteLink.tooltip}}"
+        matTooltipShowDelay="200">
+        <mat-icon>{{siteLink.icon}}</mat-icon>{{siteLink.text}}
+      </button>
+    </div>
+
+</mat-toolbar>

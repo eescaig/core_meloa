@@ -1,0 +1,7 @@
+@mixin mt($value) {
+    margin-top: $value;
+}
+app-catalogue-browser {
+    margin-top: 600px;
+    @include mt(2000px);
+}

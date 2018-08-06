@@ -1,0 +1,60 @@
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the base styles for Angular Material core. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue.
+$geoportal-primary: mat-palette($mat-green);
+$geoportal-accent:  mat-palette($mat-blue, A400);
+
+
+// The warn palette is optional (defaults to red).
+$geoportal-warn:    mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$geoportal-theme: mat-dark-theme($geoportal-primary, $geoportal-accent, $geoportal-warn);
+
+$dark-primary: rgba(117,189,209,1);
+$dark-secondary:  rgba(6,77,97,1);
+$dark-disabled: rgba(6,77,97,1);
+
+$light-primary: rgb(255, 255, 255);
+$light-secondary: rgba(255, 255, 255, 0.7);
+$light-disabled: rgba(255, 255, 255, 0.5);
+
+
+$custom-typography: mat-typography-config(
+    $font-family: 'Noto Sans'
+);
+
+@include angular-material-typography($custom-typography);
+
+// NOTE: From `2.0.0-beta.10`, you can now pass the typography via the mat-core() mixin:
+@include mat-core($custom-typography);
+
+.primary-text {
+    color: mat-color($geoportal-primary);
+}
+
+.accent-text {
+    color: mat-color($geoportal-accent, A700);
+}
+
+.light-accent {
+    color: mat-color($geoportal-accent, A100);
+}
+
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($geoportal-theme);
+
+$geoportal-light-theme: mat-light-theme($geoportal-primary, $geoportal-accent, $geoportal-warn);
+.light-theme {
+    @include angular-material-theme($geoportal-light-theme);
+}

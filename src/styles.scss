@@ -1,0 +1,370 @@
+/* ==========================================================================
+   Base styles
+   ========================================================================== */
+
+   @import 'meloa.scss';
+   html,
+   body,
+   material-app,
+   mat-sidenav-container,
+   .my-content {
+     margin: 0;
+     width: 100%;
+     height: 100%;
+     overflow-x: hidden;
+     overflow-y: hidden;
+   }
+   
+   ul {
+     padding: 0;
+     margin: 0;
+     list-style-type: none;
+   }
+
+   .mat-toolbar {
+        /* background-color: rgba(6,77,97,1);
+        background: filter-gradient(#93cede, #064d61, horizontal);
+        background: background-image(linear-gradient(left, rgba(147,206,222,1) 0%, rgba(117,189,209,1) 34%, rgba(6,77,97,1) 67%, rgba(6,77,97,1) 100%)); */
+
+        background: rgba(147,206,222,1);
+        background: -moz-linear-gradient(left, rgba(147,206,222,1) 0%, rgba(117,189,209,1) 34%, rgba(6,77,97,1) 67%, rgba(6,77,97,1) 100%);
+        background: -webkit-gradient(left top, right top, color-stop(0%, rgba(147,206,222,1)), color-stop(34%, rgba(117,189,209,1)), color-stop(67%, rgba(6,77,97,1)), color-stop(100%, rgba(6,77,97,1)));
+        background: -webkit-linear-gradient(left, rgba(147,206,222,1) 0%, rgba(117,189,209,1) 34%, rgba(6,77,97,1) 67%, rgba(6,77,97,1) 100%);
+        background: -o-linear-gradient(left, rgba(147,206,222,1) 0%, rgba(117,189,209,1) 34%, rgba(6,77,97,1) 67%, rgba(6,77,97,1) 100%);
+        background: -ms-linear-gradient(left, rgba(147,206,222,1) 0%, rgba(117,189,209,1) 34%, rgba(6,77,97,1) 67%, rgba(6,77,97,1) 100%);
+        background: linear-gradient(to right, rgba(147,206,222,1) 0%, rgba(117,189,209,1) 34%, rgba(6,77,97,1) 67%, rgba(6,77,97,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#93cede', endColorstr='#064d61', GradientType=1 );
+    }
+
+    .mat-toolbar-single-row {
+        height: 80px !important;
+    }
+
+/* ==========================================================================
+   Material styles
+   ========================================================================== */
+   .mat-tab-body-wrapper {
+    height: 100%;
+    .mat-tab-body-content {
+      height: auto !important;
+    }
+  }
+  
+  .catalogue-sidenav.mat-drawer {
+    background-color: rgba(6,77,97,1);
+    height: calc(100% - 64px);
+  }
+  
+  .mat-drawer-container.mat-drawer-transition {
+    .mat-drawer-backdrop.mat-drawer-shown {
+      visibility: hidden;
+    }
+  }
+  
+  mat-option {
+    color: $light-primary;
+  }
+  
+  .catalogue-navbar.mat-tab-nav-bar,
+  .catalogue-navbar .mat-tab-header {
+    position: absolute;
+    bottom: 0px;
+    right: 108px;
+    border-bottom: none;
+  }
+  
+  .application-dashboard .mat-drawer-content {
+    background-color: $light-primary;
+    color: $dark-secondary;
+    height: calc(100% - 64px);
+  }
+  
+  .table-card {
+    .mat-list[dense] {
+      .table-header {
+        height: 64px;
+        .mat-list-item {
+          height: 64px;
+        }
+        .mat-list-item-content {
+          height: 64px;
+        }
+      }
+      .table-row {
+        height: 48px;
+        .mat-list-item {
+          height: 48px;
+        }
+        .mat-list-item-content {
+          height: 48px;
+        }
+      }
+    }
+  }
+  
+  .table-checkbox .mat-checkbox-frame {
+    border-color: $dark-secondary;
+  }
+  
+  .table-list-item .mat-list-item>.mat-list-item-content {
+    margin-bottom: 0px;
+  }
+  
+  .dark-button.mat-button.mat-primary[disabled],
+  .dark-button.mat-button.mat-accent[disabled],
+  .dark-button.mat-button.mat-warn[disabled],
+  .dark-button.mat-button[disabled][disabled],
+  .dark-button.mat-icon-button.mat-primary[disabled],
+  .dark-button.mat-icon-button.mat-accent[disabled],
+  .dark-button.mat-icon-button.mat-warn[disabled],
+  .dark-button.mat-icon-button[disabled][disabled] {
+    color: rgba(6,77,97, 0.26) !important;
+  }
+  
+  ul.pagination li.per-page .per-page-select .mat-select-trigger {
+    min-width: 40px;
+  }
+/* ==========================================================================
+   Custom styles
+   ========================================================================== */
+.w-100 {
+  width: 100%;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.v-middle {
+  vertical-align: middle;
+}
+
+.white-primary {
+  color: $light-primary;
+}
+
+.white-secondary {
+  color: $light-secondary;
+}
+
+.white-disabled {
+  color: $light-disabled;
+}
+
+.dark-primary {
+  color: $dark-primary;
+}
+
+.dark-secondary {
+  color: $dark-secondary;
+}
+
+.dark-disabled {
+  color: $dark-disabled;
+}
+
+.dark-divider {
+  color: rgba(6, 77, 97, 0.12);
+  background-color: rgba(6, 77, 97, 0.12);
+}
+
+.ell-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ml-10 {
+  margin-left: 10px !important;
+}
+
+.mb-10 {
+  margin-bottom: 10px !important;
+}
+
+.mb-20 {
+  margin-bottom: 20px !important;
+}
+
+.mb-30 {
+  margin-bottom: 30px !important;
+}
+
+.mt-10 {
+  margin-top: 10px !important;
+}
+
+.pb-10 {
+  padding-bottom: 10px !important;
+}
+
+.pt-10 {
+  padding-top: 10px !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.title-wrapper {
+  padding: 20px;
+}
+
+.table-wrapper {
+  margin: 0 20px;
+  mat-table {
+    text-align: center;
+  }
+}
+
+.dialog-actions.right-aligned {
+  margin: 20px 0;
+  .button-wrapper {
+    margin-left: auto;
+    margin-right: 0;
+    button {
+      text-align: center;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.full-width {
+  width: 100% !important;
+}
+
+.input-full-width {
+  width: 100% !important;
+  max-width: 360px;
+}
+
+.mat-icon-button.pull-right {
+  position: absolute;
+  right: 10px;
+}
+
+.layer-tree,
+.data-package-tree {
+  .node-content-wrapper {
+    height: 48px;
+    line-height: 48px;
+  }
+  .tree-children {
+    margin-left: 30px;
+  }
+  .icon-wrapper .mat-icon {
+    vertical-align: middle
+  }
+  .node-drop-slot {
+    display: block;
+    height: 4px;
+    &.is-dragging-over {
+      background: grey;
+      height: 20px;
+      border: 2px dotted white;
+    }
+  }
+}
+
+.filters-tab {
+  .mat-tab-body-wrapper {
+    max-width: 500px;
+  }
+}
+
+.info-table-wrapper {
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    tbody {
+      tr {
+        height: 48px;
+        padding: 0 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        text-align: center;
+        td {
+          max-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          word-break: break-word;
+          &:first-child {
+            width: 25%;
+          }
+          &:last-child {
+            width: 75%;
+          }
+        }
+      }
+    }
+  }
+}
+
+.catalogue-container {
+  .mat-drawer-content.mat-sidenav-content {
+    overflow: hidden;
+  }
+}
+
+
+.coresyf-snackbar {
+  background: #323232;
+  color: white;
+
+  button.mat-simple-snackbar-action {
+    color:  mat-color($geoportal-accent, A400);
+  }
+}
+
+.coresyf-primary-snackbar {
+  background: mat-color($geoportal-primary, 500);
+  color: $dark-primary;
+
+  button.mat-simple-snackbar-action {
+    color:  mat-color($geoportal-accent, A400);
+  }
+}
+
+.navbar-link-active {
+  color: mat-color($geoportal-accent, A100) !important;
+}
+
+.application-manager-body {
+  background-color: #FAFAFA;
+  height: calc(100% - 200px);    
+  max-height: calc(100% - 200px);
+  padding: 40px 0;
+  margin-bottom: 20px;
+  overflow: auto;
+  .table-wrapper {
+      .mat-icon.status-icon {
+          &:hover {
+              color: rgba(0, 0, 0, 0.84);
+              cursor: help;
+          }
+          margin-right: 5px;
+          vertical-align: middle;
+      }
+  }
+}
+
+
+hr.beauty-divider {
+  width: 100%;
+  border-style: none;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));    
+  &.half-line {
+      width: 60%;
+      height: 1px;
+  }
+}
+
+.light-background {
+    background: #fff;
+}
