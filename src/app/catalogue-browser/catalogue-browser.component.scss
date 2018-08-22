@@ -1,19 +1,21 @@
-
 .catalogue-sidenav {
     margin-top: 64px;
     padding-bottom: 50px;
     .sidenav-container {
       position: relative;
-      min-width: 400px;
-      max-width: 400px;
+      min-width: 500px;
+      max-width: 500px;
       max-height: 150px;
+      .image-space {
+        height: 40px;
+      }
       .sidenav-description {
         position: absolute;
         bottom: 0px;
         left: 0px;
         height: 75px;
         width: calc(100% - 40px);
-        background-color: rgba(6,77,97, 0.5);
+        background-color: rgba(35, 44, 101, 0.5);
         padding: 0px 20px;
         .description-icon {
           vertical-align: middle;
@@ -45,8 +47,8 @@
 .package-manager-sidenav {
     margin-top: 64px;
     padding-bottom: 50px;
-    min-width: 400px;
-    max-width: 400px;
+    min-width: 500px;
+    max-width: 500px;
 }
 .catalogue-window {
     app-map {
@@ -56,15 +58,58 @@
       height: 100%;
       width: 100%;
     }
-    .catalogue-buttons {
-        margin-top: 104px;
-        padding-left: 20px;
-        list-style: none;
-        li {
-          margin-bottom: 10px;
-          button {
-            background-color: #3a9cd6;
+    .external {
+      display: inline-flex;
+      .div-left-buttons {
+        .catalogue-buttons {
+          margin-top: 104px;
+          padding-left: 20px;
+          list-style: none;
+          li {
+            margin-bottom: 10px;
+            button {
+              background-color: #3a9cd6;
+            }
           }
         }
+      }
+      .div-right-buttons {
+        .map-ul {
+          position: absolute; 
+          top: 210px; 
+          right: 45px;
+          list-style: none;
+          li {
+            padding: 5px 0;
+            mat-icon {
+              background:  rgba(245,245,245,.8);
+              color: black;
+              font-size: 40px;
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              /* &:hover {
+                background:  rgba(0,0,0,.65);
+                color: white;
+              } */
+            }
+            .save {
+              background:  rgba(245,245,245,.8);
+              color: black;
+              width: 40px;
+              height: 40px;
+              line-height: 40px;
+              border-radius: 50%;
+              font-size: 30px;
+              text-align: center !important;
+              &:hover {
+                background:  rgba(245,245,245,.65);
+                color: white;
+              }
+            }
+          }
+        }
+      }
     }
+
 }

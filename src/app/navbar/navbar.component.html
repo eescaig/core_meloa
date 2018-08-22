@@ -7,12 +7,9 @@
     <div fxLayout="row" fxShow="false" fxShow.gt-sm>
       <button mat-button 
         class="navbar-button"
-        *ngFor="let siteLink of siteLinks; let i = index" 
-        routerLink="{{siteLink.link}}" 
         routerLinkActive="navbar-link-active"
-        matTooltip="{{siteLink.tooltip}}"
         matTooltipShowDelay="200">
-        <mat-icon>{{siteLink.icon}}</mat-icon>{{siteLink.text}}
+        <mat-icon></mat-icon>
       </button>
     </div>
 

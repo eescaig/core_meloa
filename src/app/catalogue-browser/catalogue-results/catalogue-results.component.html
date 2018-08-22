@@ -1,0 +1,25 @@
+
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+    <button mat-icon-button disabled></button>
+    <mat-checkbox>{{node.filename}}</mat-checkbox>
+  </mat-tree-node>
+
+  <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+    <button mat-icon-button matTreeNodeToggle
+            [attr.aria-label]="'toggle ' + node.filename">
+      <mat-icon class="mat-icon-rtl-mirror">
+        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+      </mat-icon>
+    </button>
+    {{node.filename}}
+  </mat-tree-node>
+</mat-tree>
+
+<mat-paginator class="top-results-paginator"
+  [length]="numPages"
+  [pageIndex]="currentPage"
+  [pageSize]="10"
+  [pageSizeOptions]="[10, 30, 100]"
+  (page)="paginateResults($event)">
+</mat-paginator>

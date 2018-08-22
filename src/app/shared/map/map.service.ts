@@ -2,6 +2,7 @@ import { Subject } from 'rxjs/index';
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
+import 'leaflet-editable';
 
 @Injectable({
   providedIn: 'root'
@@ -36,18 +37,34 @@ createMap(mapContainer: string) {
             minZoom: 2,
             zoomControl: false,
             maxBounds: maxBounds,
-            maxBoundsViscosity: 1.0,
+            maxBoundsViscosity: 1.0
         }).setView([36, -9], 2);
+
+        L.control.zoom({
+            position:'topright'
+        }).addTo(this.map);
+
+        console.log(this.map);
+
+        /* var tooltip = L.tooltip({
+                        direction: 'left'
+                      });
+        tooltip.setLatLng(new L.LatLng(48.8583736, 2.2922926));
+        tooltip.addTo(this.map); */
     }
 }
 
-addBasemap() {
-    esri.basemapLayer('Oceans', {
-        maxZoom: 10
-    }).addTo(this.map);
-    esri.basemapLayer('Imagery', {
-        minZoom: 11,
-    }).addTo(this.map);
+addBasemap(basemap : string) {
+    if(basemap=='oceans') {
+        esri.basemapLayer('Oceans', {
+            maxZoom: 10
+        }).addTo(this.map);
+    }
+    else {
+        esri.basemapLayer('Imagery', {
+            maxZoom: 10,
+        }).addTo(this.map);
+    }
 }
 
 /**

@@ -2,13 +2,15 @@ mat-toolbar {
     position: fixed;
     top: 0px;
     z-index: 2;
+    box-shadow: 0 0 20px rgba(0,0,0,.50);
 }
 .logo-wrapper {
     display: block;
     text-align: center;
     margin-bottom: 0px;
     img {
-        width: 70%;
+        width: 68%;
+        margin-top: 5px;
     }
 }
 hr.beauty-divider {
@@ -19,7 +21,11 @@ hr.beauty-divider {
 }
 .navbar-button {
     margin: 0 10px;
+    color: #484f59;
     mat-icon {
         margin-right: 5px;
     }
+}
+.navbar-link-active {
+    color: #d8272d !important;
 }

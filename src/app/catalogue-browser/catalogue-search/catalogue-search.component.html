@@ -1,0 +1,48 @@
+<div class="item-error" *ngIf="errorMessage">
+    <mat-error class="my-error-style">{{errorMessage}} !!!</mat-error>
+    <br>
+</div>
+
+<div class="primer-div">
+    <mat-form-field class="select-width" color="accent">
+    <mat-select 
+        [(value)]="selectedCampain" 
+        (change)="onChangeCampains($event)"
+        name="Campains" 
+        placeholder="Campains">
+        <mat-option *ngFor="let camp of campains" [value]="camp">{{ camp | uppercase}}</mat-option>
+    </mat-select> 
+    </mat-form-field>
+    <div class="label-style">
+        <a mat-list-item (click)="onDrawRectangleClicked()"> &nbsp;&nbsp; Draw a box on the map
+            <mat-icon class="filter-icon" svgIcon="rectangle-draw"></mat-icon>
+        </a>
+    </div>
+</div>
+
+<form novalidate>
+  <mat-form-field class="input-width" color="accent">
+      <input matInput name="start" [(value)]="startDate" [matDatepicker]="startPicker" [max]="endDate" placeholder="Start date">
+      <mat-error>
+          Must be a valid date lower than end date.
+      </mat-error>
+      <!-- <mat-hint align="start">Select from date picker or enter valid date (e.g. 2018/09/25) </mat-hint> -->
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field class="input-width" color="accent">
+      <input matInput name="end" [(value)]="endDate" [matDatepicker]="endPicker" [min]="startDate" placeholder="End date">
+      <mat-error>
+          Value must be a valid date higher than start date.
+      </mat-error>
+      <!-- <mat-hint align="start">Select from date picker or enter valid date (e.g. 2018/09/25) </mat-hint> -->
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+  </mat-form-field>
+</form>
+<div>
+    <button mat-raised-button color="primary" class="my-buttom-style" (click)="search()">Search</button>
+</div>
+
+<mat-divider></mat-divider>
+<app-catalogue-results></app-catalogue-results>

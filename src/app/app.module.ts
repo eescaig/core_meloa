@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { CatalogueBrowserModule } from './catalogue-browser/catalogue-browser/catalogue-browser.module';
+import { CatalogueBrowserModule } from './catalogue-browser/catalogue-browser.module';
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
