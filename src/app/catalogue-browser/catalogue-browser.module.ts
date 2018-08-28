@@ -1,3 +1,4 @@
+import { OverlaysModule } from './../overlays/overlays.module';
 import { FooterModule } from './../footer/footer.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,7 +21,8 @@ import { CatalogueResultsComponent } from './catalogue-results/catalogue-results
     MeloaMaterialModule,
     MapModule,
     CatalogueBrowserRoutingModule,
-    FooterModule
+    FooterModule,
+    OverlaysModule
   ],
   declarations: [
     CatalogueBrowserComponent,

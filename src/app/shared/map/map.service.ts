@@ -1,15 +1,11 @@
 import { Subject } from 'rxjs/index';
-import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
 import 'leaflet-editable';
 
-@Injectable({
-  providedIn: 'root'
-})
 export class MapService {
   
-  private map: any;
+  public map: any;
 
   private boundingBoxChangedSource = new Subject<any>();
   public boundingBoxChanged$ = this.boundingBoxChangedSource.asObservable();
@@ -25,7 +21,7 @@ export class MapService {
    * Creates the map object in the specified map container ID.
    * It also creates basic drawing events and marker groups.
    */
-createMap(mapContainer: string) {
+createMap(mapContainer: string) : any {
     const maxBounds = L.latLngBounds(
         L.latLng(-90, -180), // Southwest
         L.latLng(90, 180)  // Northeast
@@ -43,7 +39,7 @@ createMap(mapContainer: string) {
         L.control.zoom({
             position:'topright'
         }).addTo(this.map);
-
+        console.log("Creando Map Component!!!! ");
         console.log(this.map);
 
         /* var tooltip = L.tooltip({
@@ -52,6 +48,19 @@ createMap(mapContainer: string) {
         tooltip.setLatLng(new L.LatLng(48.8583736, 2.2922926));
         tooltip.addTo(this.map); */
     }
+
+    return this.map;
+}
+
+getMap() {
+    let exportMap : any;
+    if (typeof (this.map) !== 'undefined') {
+        exportMap = this.map;
+    }
+    else {
+        exportMap = this.createMap('map');
+    }
+    return exportMap;
 }
 
 addBasemap(basemap : string) {
@@ -133,13 +142,18 @@ addLayerToMapLayers(layerId: string, layerObject: any) {
 /**
  * Adds a WMS layer, requested to the specified WMS server.
  */
-private _addWMSLayerToMapLayers(wmsServer: string, wmsOptions: any) {
+private _addWMSLayerToMapLayers(wmsServer: string, wmsOptions: any, aMap: any) {
+    console.log(this.map + " url: " + wmsServer + " options " + JSON.stringify(wmsOptions) + " Mi mapa "+ aMap);
+    if (typeof (this.map) === 'undefined') {
+        this.map = aMap;
+    }
     const layer = L.tileLayer.wms(wmsServer, wmsOptions).addTo(this.map);
+    console.log(layer);
     layer.bringToFront();
 
-    /* if (!this.hasGroup(wmsOptions.layers)) {
+    if (!this.hasGroup(wmsOptions.layers)) {
         this.addLayerGroup(wmsOptions.layers, 'feature');
-    }; */
+    };
 
     const requestedGroup = this.layerGroups.get(wmsOptions.layers);
     requestedGroup.addLayer(layer);
@@ -151,12 +165,13 @@ private _addWMSLayerToMapLayers(wmsServer: string, wmsOptions: any) {
 /**
  * Adds a WMS layer, requested to the specified WMS server.
  */
-addWMSLayerToMapLayers(wmsServer: string, layer: String) {
+addWMSLayerToMapLayers(wmsServer: string, layer: String, aMap: any) {
     return this._addWMSLayerToMapLayers(wmsServer, {
-        layers: layer,
-        format: 'image/png',
-        transparent: true
-    });
+            layers: layer,
+            format: 'image/png',
+            transparent: true
+            },
+            aMap);
 }
 
 /**
@@ -237,6 +252,41 @@ addRectangleLayer(layerId: string, coordinates: any, isEditable?: boolean, color
     if (isEditable === undefined || isEditable === true) {
         rectangleLayer.enableEdit();
     }
+}
+
+addPointLayer(layerId: string, coordinates: number[], color: string) {
+    /* const point = L.point(coordinates)
+    this.map.panBy(point);
+    this.mapLayers.set(layerId, point); */
+    console.log("Desde addPointLayer " + this.map);
+    var point = L.circleMarker(coordinates, {
+                                    radius : 4,
+                                    fillColor : color,
+                                    color : "#000",
+                                    weight : 1,
+                                    opacity : 1,
+                                    fillOpacity : 0.8
+                                }).addTo(this.map);
+    
+    var popup = L.popup().setContent('<p>Coordinates: ' + coordinates + '<br />Velocity.</p>');
+    point.bindPopup(popup);
+    point.on('click', function(e) {
+        
+    });
+
+    this.mapLayers.set(layerId, point);
+}
+
+addPolylineLayer(layerId: string, coordinates: number[][], colorLine: string) {
+    var polyline = L.polyline(coordinates, {color : colorLine,
+                                            weight: 3,
+                                            opacity: 0.5,
+                                            smoothFactor: 1}).addTo(this.map);
+    this.mapLayers.set(layerId, polyline);
+}
+
+addPopUp() {
+
 }
 
 /**

@@ -1,6 +1,7 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { MapService } from './../../shared/map/map.service';
+import { Component, OnInit, Injectable, ViewEncapsulation } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { MatTreeFlattener, MatTreeFlatDataSource, PageEvent } from '@angular/material';
+import { MatTreeFlattener, MatTreeFlatDataSource, PageEvent, MatCheckboxChange } from '@angular/material';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 
 export class FileNode {
@@ -9,7 +10,7 @@ export class FileNode {
   type: any;
 }
 
-/** Flat node with expandable and level information */
+/** Flat node with expandable and level information */ //[[41.178241, -8.596044], [41.178239, -8.596048]]
 export class FileFlatNode {
   constructor(
     public expandable: boolean, public filename: string, public level: number, public type: any) {}
@@ -18,8 +19,8 @@ export class FileFlatNode {
 const TREE_DATA = JSON.stringify({
   Campain_25062018: {
     Wavy1:25062018,
-    Wavy2:25062018,
-    Wavy3:25062018
+    Wavy2:26062018,
+    Wavy3:27062018
   },
   Campain_01082018: {
     Wavy1:25062018,
@@ -91,7 +92,8 @@ export class FileDatabase {
   selector: 'app-catalogue-results',
   templateUrl: './catalogue-results.component.html',
   styleUrls: ['./catalogue-results.component.scss'],
-  providers: [FileDatabase]
+  providers: [FileDatabase],
+  encapsulation: ViewEncapsulation.None
 })
 export class CatalogueResultsComponent implements OnInit {
   
@@ -102,7 +104,7 @@ export class CatalogueResultsComponent implements OnInit {
   featuresResults: any;
   currentPage: number;
 
-  constructor(database: FileDatabase) { 
+  constructor(database: FileDatabase, private mapService: MapService) { 
     this.treeFlattener = new MatTreeFlattener(this.transformer, this._getLevel, this._isExpandable, this._getChildren);
     this.treeControl = new FlatTreeControl<FileFlatNode>(this._getLevel, this._isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
@@ -129,6 +131,27 @@ export class CatalogueResultsComponent implements OnInit {
   hasChild = (_: number, _nodeData: FileFlatNode) => _nodeData.expandable;
 
   ngOnInit() {
+  }
+
+  onChangeCheckbox(event: MatCheckboxChange, type: any) {
+    console.log(event.checked + " Value " + event.source.value + " Node " + type);
+    if(event.checked) {
+      this.mapService.addPointLayer("point1", [41.178241, -8.596044], "#ff7800");
+      this.mapService.addPointLayer("point2", [40.177969, -8.596083], "#ff7800");
+      this.mapService.addPointLayer("point3", [39.177969, -7.596048], "#ff7800");
+      var latlngs = [
+        [41.178241, -8.596044],
+        [40.177969, -8.596083],
+        [39.177969, -7.596048]
+      ];
+      this.mapService.addPolylineLayer("poly1", latlngs, "#ff7800");
+    }
+    else {
+      this.mapService.removeLayerFromMap("point1");
+      this.mapService.removeLayerFromMap("point2");
+      this.mapService.removeLayerFromMap("point3");
+      this.mapService.removeLayerFromMap("poly1");
+    }
   }
 
 }

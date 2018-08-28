@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, HostListener, Input } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, HostListener, Input, Output, EventEmitter } from '@angular/core';
 import { MapTooltipComponent } from './map-tooltip/map-tooltip.component';
 import { MapService } from './map.service';
 
@@ -10,17 +10,22 @@ import { MapService } from './map.service';
 export class MapComponent implements OnInit, AfterViewInit {
   
   @Input() basemap: string;
-  @ViewChild(MapTooltipComponent)
-  private mapTooltipComponent: MapTooltipComponent;
+  @ViewChild(MapTooltipComponent) mapTooltipComponent: MapTooltipComponent;
+
+  objectMap : any;
+
   constructor(private mapService: MapService) { }
 
   ngOnInit() {
   }
 
   ngAfterViewInit() {
-    this.mapService.createMap('map');
+    this.objectMap = this.mapService.createMap('map');
     this.mapService.addBasemap(this.basemap);
-    console.log('MapComponent!!!!!!!!!!!!!!!!!!');
+  }
+
+  getObjectMap() {
+    return this.objectMap;
   }
 
   @HostListener('mousemove', ['$event'])

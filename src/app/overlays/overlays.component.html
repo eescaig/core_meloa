@@ -1,0 +1,21 @@
+
+<div class="item-error" *ngIf="errorMessage">
+  <!-- <mat-error>{{errorMessage}} !!!</mat-error> -->
+  <br>
+</div>
+
+<div class="search-overlays-div">
+    <mat-icon class="search-icon">search</mat-icon>
+    <mat-form-field class="search-overlays-input" color="accent">
+      <mat-label class="search-label">search overlay</mat-label>
+      <input matInput type="search">
+    </mat-form-field>
+    <div>
+      <button mat-raised-button class="add-overlays-buttom" (click)="openDialog()">Add overlay</button>
+    </div>
+</div>
+<div>
+    <mat-divider></mat-divider>
+</div>
+  
+

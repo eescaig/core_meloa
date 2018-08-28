@@ -7,64 +7,58 @@ import { Search } from './../shared/models/search.model';
 import { CatalogueSimoceanService } from './../shared/services/catalogue-simocean.service';
 import { DatasetList } from './../shared/models/dataset-list.model';
 import { Observable } from 'rxjs';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { MatPaginator, MatTreeFlatDataSource, MatIconRegistry } from '@angular/material';
 
 @Component({
   selector: 'app-catalogue-search',
   templateUrl: './catalogue-search.component.html',
-  styleUrls: ['./catalogue-search.component.scss']
+  styleUrls: ['./catalogue-search.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CatalogueSearchComponent implements OnInit, AfterViewInit {
   
-  selectedCampain: string;
   campains: Observable<DatasetList>;
+  selectedCampain: string;
   startDate : Date;
   endDate : Date;
   errorMessage : string = "";
   dataSource: MatTreeFlatDataSource<FileNode, FileFlatNode>;
-  isLocationExpanded = false;
   isDrawingEnabled = false;
   boundingBox: LatLng[];
+  sessionStorage;
   
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, 
-              private simoceanService: CatalogueSimoceanService, private mapService: MapService) {
+  constructor(private simoceanService: CatalogueSimoceanService, private mapService: MapService,
+              iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('rectangle-draw', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/rectangle-draw.svg'));
-    this.boundingBox = this.loadFilterFromStorage('bbox');
+    this.getCampainsList();
+    //this.loadFilters();
   }
 
   ngOnInit() {
-    this.getCampainsList();
   }
 
   ngAfterViewInit() {
-    // We call this method so that the bounding box stored in the session
-    // storage is automatically added to the map
-    this.addBBoxToMap();
-    //this.setupMapServiceEvents();
+    //console.log('AfterView of catalogue search');
   }
 
   onChangeCampains(value) {
     this.selectedCampain = value;
   }
 
-  /**
-   * Checks if the session storage has an item that matches the given filter name
-   * and returns the parsed value if so.
-   *
-   * @param filterName The name of the filter to load from the storage
-   */
-  loadFilterFromStorage(filterName: string) {
-    if (sessionStorage.getItem(filterName) !== null && sessionStorage.getItem(filterName) !== 'undefined') {
-      return JSON.parse(sessionStorage.getItem(filterName));
-    }
+  onDrawRectangleClicked() {
+    // We call this method so that the bounding box stored in the session
+    // storage is automatically added to the map
+    this.addBBoxToMap();
+    this.setupMapServiceEvents();
+    this.prepareDrawing();
+    this.mapService.drawBox();
   }
 
   /**
    * Adds a bounding box to the map
    */
   addBBoxToMap() {
-    console.log('addBoundingBox !!!!!!!!!!!!!!!!!!');
     if (this.boundingBox) {
       this.mapService.addPolygonLayer('temp', this.boundingBox, true, '#76FF03');
     }
@@ -114,15 +108,8 @@ export class CatalogueSearchComponent implements OnInit, AfterViewInit {
     }
     return false;
   }
-
-  onDrawRectangleClicked() {
-    this.prepareDrawing();
-    this.mapService.drawBox();
-  }
-
+  
   prepareDrawing() {
-    console.log('Dibujando', this.isDrawingEnabled);
-    this.isLocationExpanded = false;
     // If the drawing is enabled, we remove the temporary layer from the map
     // to start a new drawing
     if (this.isDrawingEnabled) {
@@ -136,7 +123,7 @@ export class CatalogueSearchComponent implements OnInit, AfterViewInit {
     this.mapService.removeLayerFromMap('temp');
   }
 
-  search() {
+  onSearchClick() {
     this.resetValues();
       let objSearch = this.validations(this.selectedCampain, this.startDate, this.endDate);
       if(objSearch!==undefined) {
@@ -160,6 +147,14 @@ export class CatalogueSearchComponent implements OnInit, AfterViewInit {
                               }
                             });
       }
+  }
+
+  onSearchClear() {
+    this.clearDrawing();
+    this.boundingBox = null;
+    this.selectedCampain = undefined;
+    this.startDate = undefined;
+    this.endDate = undefined;
   }
 
   getCampainsList() {
@@ -219,5 +214,62 @@ export class CatalogueSearchComponent implements OnInit, AfterViewInit {
     
     return new Search(selectedOrg, tempStartDate, tempEndDate);
   }
+
+  /**
+   * Loads filter values stored in session storage
+   */
+  /* loadFilters() {
+    this.getCampainsList();
+    const startDate = this.loadFilterFromStorage('startDate');
+    const endDate = this.loadFilterFromStorage('endDate');
+    this.startDate = startDate && new Date(startDate);
+    this.endDate = endDate && new Date(endDate);
+    this.addFilterToSessionStorage('bbox', this.getBboxForSessionStorage());
+    this.boundingBox = this.loadFilterFromStorage('bbox');
+  } */
+
+  /**
+   * Checks if the session storage has an item that matches the given filter name
+   * and returns the parsed value if so.
+   *
+   * @param filterName The name of the filter to load from the storage
+   */
+  /* loadFilterFromStorage(filterName: string) {
+    if (sessionStorage.getItem(filterName) !== null && sessionStorage.getItem(filterName) !== 'undefined') {
+      return JSON.parse(sessionStorage.getItem(filterName));
+    }
+  } */
+  
+  /**
+   * Adds a filter to the session storage for persistence.
+   * If the value is null or undefined it will remove the filter from the storage.
+   *
+   * @param name The name of the filter to use in the session storage
+   * @param value The value to store in session
+   */
+  /* addFilterToSessionStorage(name: string, value: any) {
+    if (value !== null || value !== undefined) {
+      sessionStorage.setItem(name, JSON.stringify(value));
+    } else {
+      sessionStorage.removeItem(name);
+    }
+  } */
+
+  /**
+   * Generates a valid bounding box to put in storage.
+   */
+  /* getBboxForSessionStorage(): LatLng[] {
+    let bbox = null;
+    if (this.boundingBox) {
+      bbox = this.boundingBox.map(bboxCoords => {
+        return {
+          lng: bboxCoords.lng,
+          lat: bboxCoords.lat
+        };
+      });
+    }
+    return bbox;
+  } */
+
 
 }

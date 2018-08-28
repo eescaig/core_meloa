@@ -2,7 +2,7 @@
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
     <button mat-icon-button disabled></button>
-    <mat-checkbox>{{node.filename}}</mat-checkbox>
+    <mat-checkbox color="primary" (change)="onChangeCheckbox($event, node.type)">{{node.filename}}</mat-checkbox>
   </mat-tree-node>
 
   <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>

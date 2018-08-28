@@ -8,27 +8,21 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue.
-$geoportal-primary: mat-palette($mat-green);
+$geoportal-primary: mat-palette($mat-light-blue);
 $geoportal-accent:  mat-palette($mat-blue, A400);
-
 
 // The warn palette is optional (defaults to red).
 $geoportal-warn:    mat-palette($mat-red);
 
+$geoportal-foreground: map-palette($mat-light-blue);
+$geoportal-background: map-palette($mat-blue, A400);
+
 // Create the theme object (a Sass map containing all of the palettes).
 $geoportal-theme: mat-dark-theme($geoportal-primary, $geoportal-accent, $geoportal-warn);
 
-$dark-primary: rgba(117,189,209,1);
-$dark-secondary:  rgba(6,77,97,1);
-$dark-disabled: rgba(6,77,97,1);
-
-$light-primary: rgb(255, 255, 255);
-$light-secondary: rgba(58, 156, 214, 1);
-$light-disabled: rgba(58, 156, 214, 0.5);
-
 
 $custom-typography: mat-typography-config(
-    $font-family: 'Noto Sans'
+    $font-family: '"Open Sans", Helvetica, Arial, sans-serif'
 );
 
 @include angular-material-typography($custom-typography);

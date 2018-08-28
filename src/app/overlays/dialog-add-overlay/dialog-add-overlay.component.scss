@@ -1,0 +1,30 @@
+.head-dialog {
+    color: #d9232e;
+    font-weight: bold;
+    font-size: 17px;
+    font-family: Arial;
+}
+.dialog-font {
+    font-size: 17px !important;
+    font-weight: 400 !important;
+    color:#232c65 !important;
+    font-family: Arial !important;
+}
+.mat-divisor-overlay {
+    border-top: 2px solid;
+    color: #3a9cd6;
+}
+.add-overlays-div {
+    display: grid;
+}
+.upload-overlay-buttom {
+    background-color: rgba(210, 230, 246, 0.3);
+}
+.add-overlay-buttoms {
+    position: relative;
+    left: 200px;
+    margin-top: 15px;
+    margin-left: 10px;
+    background-color: rgba(210, 230, 246, 0.3);
+    color: #3a9cd6;
+}

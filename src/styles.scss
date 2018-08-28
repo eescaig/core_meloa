@@ -40,16 +40,44 @@
   }
   
   .catalogue-sidenav.mat-drawer {
-    background-color: rgb(7, 10, 34);
+    background-color:rgb(250, 250, 250);
+    color:#232c65 !important;
     height: calc(100% - 64px);
   }
+
+  /* .mat-drawer .mat-drawer-container {
+    background-color: rgba(210, 230, 246, 0.3)!important;
+  } */
   
   .mat-drawer-container.mat-drawer-transition {
     .mat-drawer-backdrop.mat-drawer-shown {
       visibility: hidden;
     }
   }
-  
+
+/* .cdk-overlay-pane .mat-datepicker-popup {
+  background-color:rgb rgba(210, 230, 246, 0.3)!important;
+  color: rgba(210, 230, 246, 0.3)!important;
+} */
+// Dialog Add overlay
+.mat-dialog-container {
+    background-color: white !important;
+    color: rgba(210, 230, 246, 0.3) !important;
+}
+/* FOCUS elementos styles !!!! */
+.mat-focused .mat-form-field-label { 
+  color:   #232c65 !important; 
+}
+.mat-focused .placeholder { 
+  color:   #232c65 !important; 
+} 
+.mat-focused .mat-form-field-underline .mat-form-field-ripple { 
+  background:  #232c65 !important; 
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: rgba(210, 230, 246, 0.3);
+}
   /* mat-option {
     color: $light-primary;
   } */
@@ -118,7 +146,7 @@
    ========================================================================== */
 
 .mat-ink-bar {
-  background-color: #40C4FF !important;
+  background-color: #3a9cd6 !important;
 }
 
 .leaflet-right {
@@ -170,9 +198,10 @@
   padding: 1px 0 !important;
 } */
 
-/* .mat-datepicker-toggle-active {
-  color: #3a9cd6 !important;
-} */
+// icono calendar!!!!
+.mat-datepicker-toggle {
+  color: #232c65 !important;
+}
 
 .mat-icon-button.pull-right {
   position: absolute;
@@ -191,9 +220,9 @@
   }
 }
 
-.navbar-link-active {
+/* .navbar-link-active {
   color: mat-color($geoportal-accent, A100) !important;
-}
+} */
 
 .application-manager-body {
   background-color: #FAFAFA;

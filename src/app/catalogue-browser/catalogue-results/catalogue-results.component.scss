@@ -1,9 +1,27 @@
+.mat-tree {
+    background:rgba(210, 230, 246, 0.3);
+    .mat-tree-node {
+        color:#232c65;
+    }
+}
+.mat-checkbox-frame {
+    border-color: #3a9cd6;
+}
 .mat-paginator {
-    background-color: #070a22 !important;
+    background-color:rgba(210, 230, 246, 0.3) !important;
+}
+.mat-paginator-range-actions, .mat-icon-button, .mat-form-field-wrapper {
+    color:#232c65 !important; 
+}
+.mat-paginator-page-size, .mat-paginator-range-label {
+    color: #484f59;
 }
 
-.mat-tree {
-    background: #070a22 ;
+.mat-select-content, .mat-select-panel-done-animating {
+    background:rgba(210, 230, 246, 0.8) !important;
+}
+.mat-option-text, .mat-select-value, .mat-select-arrow {
+    color: #232c65;
 }
 .top-results-paginator {
     margin-bottom: 20px;

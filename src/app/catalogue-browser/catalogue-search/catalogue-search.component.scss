@@ -2,30 +2,74 @@
     display: inline-flex;
 }
 .label-style {
-    padding-top: 20px;
-    padding-left: 30px;
-    color: #acadb5;
+    margin-top: 20px;
+    margin-left: 30px;
+    color:#232c65 !important;
     font-size: inherit;
     font-weight: 400;
 }
-.select-width {
+.catalogue-search-select {
     width: 40% !important;
-    padding-left: 15px;
+    margin-left: 15px;
+    mat-label, mat-select {
+        color:#232c65 !important;
+    }
 }
 .mat-option {
-    background-color: rgba(7, 10, 34, 0.7);
+    background-color:  #FAFAFA;
+    color:#232c65 !important;
+    &:hover {
+        background-color: rgba(210, 230, 246, 0.3);
+    }
 }
-.input-width {
+
+.mat-datepicker-content .mat-calendar, .mat-calendar-content {
+    background-color: rgba(238, 244, 249, 1) !important;
+    color:  #232c65;
+}
+.mat-calendar-arrow {
+    border-top-color: #3a9cd6;
+}
+.mat-calendar-table-header {
+    color: #d9232e;
+    th {
+        font-weight: 700;
+    }
+}
+.mat-calendar-body-cell-content {
+    color: #484f59;
+}
+
+.datepicker-start {
     width: 40% !important;
-    padding-left: 15px;
+    margin-left: 15px;
+    input, mat-label {
+        color: #232c65;
+    }
+}
+.datepicker-end {
+    width: 40% !important;
+    margin-left: 25px;
+    input, mat-label {
+        color: #232c65;
+    }
 }
 .filter-icon {
-    color: white;
+    color:#232c65;
     height: 16px;
     width: 16px;
     line-height: 24px;
     margin-right: 10px;
 }
-.my-buttom-style {
-    background-color: #3a9cd6;
+.catalogue-search-buttoms {
+    background-color: rgba(210, 230, 246, 0.3);
+    color: #3a9cd6;
+    font-size: large;
+    position: relative;
+    left: 270px;
+    margin-left: 10px;
+}
+.mat-divisor-search {
+    border-top: 2px solid;
+    color: #3a9cd6;
 }

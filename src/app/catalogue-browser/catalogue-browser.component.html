@@ -1,9 +1,8 @@
 <mat-sidenav-container class="catalogue-container">
     <!-- Sidenav container for the search browser manager -->
-    <!-- TODO: Extract the code below the sidenav to its own component -->
     <mat-sidenav #cataloguesidenav mode="over" position="start" opened="false" class="catalogue-sidenav">
         <div class="sidenav-container">
-            <img src="../../../assets/img/catalogue.png" alt="Sentinel 1 image">
+            <img src="../../../assets/img/catalogue.png">
             <div class="image-space"></div>
             <!-- <div class="sidenav-description">
                 <h1 class="mat-headline">
@@ -18,7 +17,6 @@
             <mat-tab>
                 <ng-template mat-tab-label>
                     <mat-label>WAVYs</mat-label>
-                    <!-- <mat-icon>search</mat-icon> -->
                 </ng-template>
                 <ng-template matTabContent>
                     <app-catalogue-search></app-catalogue-search>
@@ -34,19 +32,16 @@
                     {{searchResults > 99 ? '99+' : searchResults}}
                 </span> -->
                 </ng-template>
-                <ng-template matTabContent>                
+                <ng-template matTabContent>
+                    <app-overlays [mapa]="objectMap"></app-overlays>           
                 </ng-template>
             </mat-tab>
         </mat-tab-group>
     </mat-sidenav>
-  <!-- Sidenav container for the data package manager -->
-    <!-- <mat-sidenav #datapackagesidenav  mode="over" position="end" opened="false" class="package-manager-sidenav">
-        <gp-data-package-manager [sidenavRef]="datapackagesidenav" *ngIf="isUserAuthenticated"></gp-data-package-manager>
-    </mat-sidenav> -->
 
   <!-- Main catalogue map window -->
 <div class="catalogue-window">
-    <app-map [basemap]="valueBasemap"></app-map>
+    <app-map [basemap]="valueBaseMap"></app-map>
 
     <div class="external">
     <div class="div-left-buttons">
@@ -58,13 +53,8 @@
                 </button>
             </li>
             <li>
-                <button mat-fab (click)="onClickSatellite()" matTooltip="Satellite basemap" [matTooltipPosition]="'right'">
-                    <mat-icon>satellite</mat-icon>
-                </button>
-            </li>
-            <li>
-                <button mat-fab (click)="onClickBathymetry()" matTooltip="Bathymetry basemap" [matTooltipPosition]="'right'">
-                    <mat-icon>map</mat-icon>
+                <button mat-fab (click)="onClickChangeBaseMap()" matTooltip="{{toolTipBaseMap}} basemap" [matTooltipPosition]="'right'">
+                    <mat-icon>{{iconBaseMap}}</mat-icon>
                 </button>
             </li>
         </ul>
@@ -83,14 +73,8 @@
         </ul>
     </div>
     </div>
-    
-    <!-- <button mat-fab *ngIf="isUserAuthenticated" (click)="datapackagesidenav.toggle()" matTooltip="Manage your data packages" [matTooltipPosition]="'left'" class="data-package-toggle">
-        <mat-icon style="color:white" svgIcon="package"></mat-icon>
-    </button> -->
-    <!-- <gp-grid-generator [isUserAuthenticated]="isUserAuthenticated" [currentUser]="currentUser"></gp-grid-generator> -->
-    
 </div>
 
 </mat-sidenav-container>
-<app-footer></app-footer>
+<!-- <app-footer></app-footer> -->
 
