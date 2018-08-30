@@ -41,19 +41,19 @@
 
   <!-- Main catalogue map window -->
 <div class="catalogue-window">
-    <app-map [basemap]="valueBaseMap"></app-map>
+    <app-map #mapCatalogue [basemap]="valueBaseMap"></app-map>
 
     <div class="external">
     <div class="div-left-buttons">
         <ul class="catalogue-buttons">
             <li>
-                <button mat-fab (click)="cataloguesidenav.toggle()" matTooltip="Browse our catalogue" [matTooltipPosition]="'right'">
+                <button mat-fab (click)="cataloguesidenav.toggle()" title="Browse our catalogue">
                     <mat-icon [@rotateIcon]="cataloguesidenav.opened ? 'open' : 'closed'">
                         {{ cataloguesidenav.opened ? 'close' : 'search' }}</mat-icon>
                 </button>
             </li>
             <li>
-                <button mat-fab (click)="onClickChangeBaseMap()" matTooltip="{{toolTipBaseMap}} basemap" [matTooltipPosition]="'right'">
+                <button mat-fab (click)="onClickChangeBaseMap()" title="{{toolTipBaseMap}} basemap">
                     <mat-icon>{{iconBaseMap}}</mat-icon>
                 </button>
             </li>
@@ -68,7 +68,7 @@
                 <mat-icon matTooltip="Zoom out" [matTooltipPosition]="'right'">remove_circle_outline</mat-icon>
             </li> -->
             <li>
-                <mat-icon class="save" mat-fab matTooltip="Save image" [matTooltipPosition]="'right'">save</mat-icon>
+                <mat-icon class="save" mat-fab title="Save image">save</mat-icon>
             </li>
         </ul>
     </div>

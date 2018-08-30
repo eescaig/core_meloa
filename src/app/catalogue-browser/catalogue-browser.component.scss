@@ -1,6 +1,6 @@
 .catalogue-sidenav {
-    margin-top: 64px;
-    padding-bottom: 50px;
+    margin-top: 84px;
+    //padding-bottom: 50px;
     overflow-x: hidden;
     .sidenav-container {
       position: relative;
@@ -12,7 +12,7 @@
       }
       .close-panel-button {
         position: absolute;
-        top: 20px;
+        top: 30px;
         right: 20px;
         background-color: #3a9cd6;
       }
@@ -33,7 +33,7 @@
     }
 }
 .package-manager-sidenav {
-    margin-top: 64px;
+    margin-top: 84px;
     padding-bottom: 50px;
     min-width: 500px;
     max-width: 500px;
@@ -50,7 +50,7 @@
       display: inline-flex;
       .div-left-buttons {
         .catalogue-buttons {
-          margin-top: 104px;
+          margin-top: 124px;
           padding-left: 20px;
           list-style: none;
           li {

@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { OverlaysModule } from './../overlays/overlays.module';
 import { FooterModule } from './../footer/footer.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -16,6 +17,7 @@ import { CatalogueResultsComponent } from './catalogue-results/catalogue-results
   imports: [
     CommonModule,
     BrowserModule,
+    FormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
     MeloaMaterialModule,

@@ -27,6 +27,7 @@
     background-color: rgba(238, 244, 249, 1) !important;
     color:  #232c65;
 }
+
 .mat-calendar-arrow {
     border-top-color: #3a9cd6;
 }
@@ -38,6 +39,9 @@
 }
 .mat-calendar-body-cell-content {
     color: #484f59;
+}
+.mat-calendar-body-disabled > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected) {
+    color: #99a3b1;
 }
 
 .datepicker-start {

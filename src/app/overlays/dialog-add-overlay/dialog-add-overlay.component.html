@@ -4,39 +4,62 @@
   <mat-divider class="mat-divisor-overlay"></mat-divider>
   <br>
 </div>
-<div class="add-overlays-div dialog-font">
-    <mat-form-field appearance="fill">
-      <mat-label class="dialog-font">Enter a name to Overlay</mat-label>
-      <input matInput type="text" #name [(ngModel)]="nameOverlay">
-    </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label class="dialog-font">Enter a description to Overlay</mat-label>
-      <textarea matInput #description [(ngModel)]="descriptionOverlay"></textarea>
-    </mat-form-field>
+  <form novalidate [formGroup]="dialogInputForm" (ngSubmit)="onSubmit()">
+    <div class="add-overlays-div dialog-font">
+      <mat-form-field appearance="fill">
+        <mat-label class="dialog-font">Enter a name to Overlay</mat-label>
+        <input matInput type="text" formControlName="nameForm" >
+        <mat-error *ngIf="name.hasError('required')"> 
+            Name of Overlay is required
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label class="dialog-font">URL of Web Map Service</mat-label>
-      <input matInput type="url" #inputURL [(ngModel)]="urlWMS">
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label class="dialog-font">Enter a description to Overlay</mat-label>
+        <textarea matInput formControlName="descriptionForm"></textarea>
+        <mat-error *ngIf="description.hasError('required')">
+            Description of Overlay is required
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label class="dialog-font">Layer of Web Map Service</mat-label>
-        <input matInput type="text" #inputLayer [(ngModel)]="layerWMS">
-    </mat-form-field>
+      <mat-form-field appearance="fill"> 
+        <mat-label class="dialog-font">URL of Web Map Service</mat-label>
+        <input matInput type="url" formControlName="urlForm">
+        <mat-error *ngIf="url.hasError('required')">
+            URL of Web Map Service is required
+        </mat-error>
+      </mat-form-field>
 
-    <div>
-      <button mat-button class="upload-overlay-buttom">Upload image</button>
+      <mat-form-field appearance="fill">
+          <mat-label class="dialog-font">Layer of Web Map Service</mat-label>
+          <input matInput type="text" formControlName="layerForm">
+          <mat-error *ngIf="layer.hasError('required')">
+              Layer is required
+          </mat-error>
+      </mat-form-field>
+
+      <div>
+        <mat-label class="dialog-font">File Upload</mat-label><br>
+        <input #fileInput type="file" style="display: none;" (change)="onFileSelected($event)">
+        <button mat-buttom type="button" class="upload-overlay-buttom" (click)="fileInput.click()">Pick File</button>
+        <button mat-buttom type="button" class="upload-overlay-buttom" (click)="onUpload()">Upload</button>
+        
+      </div>
     </div>
-</div>
+  
+    
+
 <div>
     <br>
     <mat-divider class="mat-divisor-overlay"></mat-divider>
     <br>
 </div>
 <div class="dialog-font">
-  <button mat-button class="add-overlay-buttoms" (click)="onAddClick()">ADD</button>
-  <button mat-button class="add-overlay-buttoms" (click)="onCancelClick()">CANCEL</button>
+  <button mat-button type="submit" class="add-overlay-buttoms" [disabled]="dialogInputForm.invalid" (click)="onAddClick()">ADD</button>
+  <button mat-button type="button" class="add-overlay-buttoms" (click)="onCancelClick()">CANCEL</button>
 </div>
+
+</form>
 
 

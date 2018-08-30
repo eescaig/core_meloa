@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { filter } from "rxjs/operators";
 import { Observable } from 'rxjs';

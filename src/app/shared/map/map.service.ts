@@ -66,12 +66,12 @@ getMap() {
 addBasemap(basemap : string) {
     if(basemap=='oceans') {
         esri.basemapLayer('Oceans', {
-            maxZoom: 10
+            maxZoom: 18
         }).addTo(this.map);
     }
     else {
         esri.basemapLayer('Imagery', {
-            maxZoom: 10,
+            maxZoom: 18,
         }).addTo(this.map);
     }
 }
@@ -150,6 +150,10 @@ private _addWMSLayerToMapLayers(wmsServer: string, wmsOptions: any, aMap: any) {
     const layer = L.tileLayer.wms(wmsServer, wmsOptions).addTo(this.map);
     console.log(layer);
     layer.bringToFront();
+    // Para centrar la imagen que se esté cargando. Hacerlo dinamico
+    //this.map.setZoom(10);
+    let myCenter = new L.LatLng(50.5, -70.51);
+    this.map.setView(myCenter, 4);
 
     if (!this.hasGroup(wmsOptions.layers)) {
         this.addLayerGroup(wmsOptions.layers, 'feature');

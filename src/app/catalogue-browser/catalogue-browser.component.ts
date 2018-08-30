@@ -23,7 +23,7 @@ export class CatalogueBrowserComponent implements OnInit, AfterViewInit {
   
   @ViewChild('cataloguetabs') catalogueTabs;
   @ViewChild(CatalogueResultsComponent) resultsComponent;
-  @ViewChild(MapComponent) mapComponent : MapComponent;
+  @ViewChild('mapCatalogue') mapComponent : MapComponent;
   progressLoading = false;
   searchResults: number;
   valueBaseMap: string = "oceans";
@@ -41,8 +41,8 @@ export class CatalogueBrowserComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.objectMap = this.mapComponent.getObjectMap();
-    console.log("Obteniendo mapa con get desde catalogue browser");
-    console.log(this.objectMap);
+    /* console.log("Obteniendo mapa con get desde catalogue browser");
+    console.log(this.objectMap); */
   }
 
   onClickChangeBaseMap() {

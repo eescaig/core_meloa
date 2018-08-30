@@ -19,6 +19,13 @@
 }
 .upload-overlay-buttom {
     background-color: rgba(210, 230, 246, 0.3);
+    margin-top: 15px;
+    margin-left: 10px;
+    background-color: rgba(210, 230, 246, 0.3);
+    color: #3a9cd6;
+    &:disabled {
+        color: #a0a1a9;
+    }
 }
 .add-overlay-buttoms {
     position: relative;
@@ -27,4 +34,7 @@
     margin-left: 10px;
     background-color: rgba(210, 230, 246, 0.3);
     color: #3a9cd6;
+    &:disabled {
+        color: #a0a1a9;
+    }
 }

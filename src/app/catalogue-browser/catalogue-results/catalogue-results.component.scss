@@ -10,8 +10,11 @@
 .mat-paginator {
     background-color:rgba(210, 230, 246, 0.3) !important;
 }
-.mat-paginator-range-actions, .mat-icon-button, .mat-form-field-wrapper {
+.mat-paginator-range-actions, .mat-form-field-wrapper {
     color:#232c65 !important; 
+}
+.mat-icon-button {
+    color: #3a9cd6 !important;
 }
 .mat-paginator-page-size, .mat-paginator-range-label {
     color: #484f59;

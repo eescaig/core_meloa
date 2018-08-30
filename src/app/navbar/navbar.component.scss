@@ -10,25 +10,31 @@ mat-toolbar {
     text-align: center;
     margin-bottom: 0px;
     img {
-        width: 68%;
-        margin-top: 5px;
+        width: 80%;
+        margin-top: 7px;
     }
 }
 .logo-eu-div {
     width: 150px;
-    height: 86px;
-    display: inline-block;
-    text-align: center;
+    // display: inline-block;
+    // text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .img-eu {
+    padding-top: 30px;
     width: 35%;
     margin-top: 10px;
 }
 .info-eu {
-    font-size: 50%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 45%;
     color: #232c65;
     display: block;
-    margin: 0px;
+    margin: 0px !important;
+    padding: 0px !important;
     -webkit-margin-before: 0px;
     -webkit-margin-after: 0px;
 }
