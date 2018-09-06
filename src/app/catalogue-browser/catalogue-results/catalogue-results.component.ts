@@ -1,8 +1,10 @@
+import { MapComponent } from './../../shared/map/map.component';
 import { MapService } from './../../shared/map/map.service';
-import { Component, OnInit, Injectable, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Injectable, ViewEncapsulation, SimpleChanges } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlattener, MatTreeFlatDataSource, PageEvent, MatCheckboxChange } from '@angular/material';
 import { BehaviorSubject, Observable, of } from 'rxjs';
+import { PapaParseService } from 'ngx-papaparse';
 
 export class FileNode {
   children: FileNode[];
@@ -92,7 +94,7 @@ export class FileDatabase {
   selector: 'app-catalogue-results',
   templateUrl: './catalogue-results.component.html',
   styleUrls: ['./catalogue-results.component.scss'],
-  providers: [FileDatabase],
+  providers: [FileDatabase, MapComponent],
   encapsulation: ViewEncapsulation.None
 })
 export class CatalogueResultsComponent implements OnInit {
@@ -104,7 +106,12 @@ export class CatalogueResultsComponent implements OnInit {
   featuresResults: any;
   currentPage: number;
 
-  constructor(database: FileDatabase, private mapService: MapService) { 
+  selectedFile: File = null;
+  dataList : any;
+
+  mapa : any;
+
+  constructor(private mapService: MapService, private mapComponent: MapComponent ,private papa: PapaParseService, database: FileDatabase) { 
     this.treeFlattener = new MatTreeFlattener(this.transformer, this._getLevel, this._isExpandable, this._getChildren);
     this.treeControl = new FlatTreeControl<FileFlatNode>(this._getLevel, this._isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
@@ -131,26 +138,87 @@ export class CatalogueResultsComponent implements OnInit {
   hasChild = (_: number, _nodeData: FileFlatNode) => _nodeData.expandable;
 
   ngOnInit() {
+    //console.log("Result component ");
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
+    this.mapService.onChangeZoom();
+  }
+
+  onFileSelected(event) {
+    this.selectedFile = <File> event.target.files[0];
+    this.fileProcessing(this.selectedFile);
+
+    this.mapa = this.mapComponent.getObjectMap();
+  }
+
+  fileProcessing(selectedFile: File) {
+    if(selectedFile) {
+      let reader : FileReader = new FileReader();
+      reader.readAsText(selectedFile);
+      reader.onload = (e: any) => {
+        //console.log('csv content', e.target.result);
+        this.papa.parse(e.target.result, {
+          header: true,
+          skipEmptyLines: true,
+          complete: (result, selectedFile) => {
+            console.log(result);
+            this.dataList = result.data;
+          }
+        })
+      };
+    }
   }
 
   onChangeCheckbox(event: MatCheckboxChange, type: any) {
-    console.log(event.checked + " Value " + event.source.value + " Node " + type);
+    console.log("Checbox " + this.mapa);
+    this.mapService.setValueOfMap(this.mapa);
+    let latlngsPoly : number[][] = [];
     if(event.checked) {
-      this.mapService.addPointLayer("point1", [41.178241, -8.596044], "#ff7800");
-      this.mapService.addPointLayer("point2", [40.177969, -8.596083], "#ff7800");
-      this.mapService.addPointLayer("point3", [39.177969, -7.596048], "#ff7800");
-      var latlngs = [
+      //console.log(this.dataList);
+      this.dataList.map(obj => { 
+        //console.log(obj);
+        
+        let latlng : number[] = [Number.parseFloat(obj.latitude), Number.parseFloat(obj.longitude)];
+        latlngsPoly.push(latlng);
+        let nameLayer : string = "point" + obj.record;
+        
+        this.mapService.addPointLayer(nameLayer, latlng, "#ff7800");
+        
+      });
+      console.log(latlngsPoly);
+      this.mapService.addPolylineLayer("poly1", latlngsPoly, "#ff7800");
+
+      this.mapService.onChangeZoom();
+      
+     //this.mapService.addPolylineLayer("poly1", latlngs, "#ff7800");
+      /* this.mapService.addPointLayer("point1", [41.178241, -8.596044], "#ff7800", this.mapa);
+      this.mapService.addPointLayer("point2", [40.177969, -8.596083], "#ff7800", this.mapa);
+      this.mapService.addPointLayer("point3", [39.177969, -7.596048], "#ff7800", this.mapa); 
+      let latlngs = [
         [41.178241, -8.596044],
         [40.177969, -8.596083],
         [39.177969, -7.596048]
       ];
-      this.mapService.addPolylineLayer("poly1", latlngs, "#ff7800");
+      this.mapService.addPolylineLayer("poly1", latlngs, "#ff7800");*/
     }
     else {
-      this.mapService.removeLayerFromMap("point1");
+
+      this.dataList.map(obj => { 
+        //console.log(obj);
+        let nameLayer : string = "point" + obj.record;
+        this.mapService.removeLayerFromMap(nameLayer);
+      });
+      this.mapService.removeLayerFromMap("poly1");
+
+      this.mapService.onChangeZoom();
+      
+      /* this.mapService.removeLayerFromMap("point1");
       this.mapService.removeLayerFromMap("point2");
       this.mapService.removeLayerFromMap("point3");
-      this.mapService.removeLayerFromMap("poly1");
+      this.mapService.removeLayerFromMap("poly1"); */
     }
   }
 

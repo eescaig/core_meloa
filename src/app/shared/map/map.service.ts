@@ -2,6 +2,8 @@ import { Subject } from 'rxjs/index';
 import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
 import 'leaflet-editable';
+import 'leaflet-easyprint';
+
 
 export class MapService {
   
@@ -31,6 +33,7 @@ createMap(mapContainer: string) : any {
         this.map = L.map(mapContainer, {
             editable: true,
             minZoom: 2,
+            maxZoom: 22,
             zoomControl: false,
             maxBounds: maxBounds,
             maxBoundsViscosity: 1.0
@@ -39,14 +42,16 @@ createMap(mapContainer: string) : any {
         L.control.zoom({
             position:'topright'
         }).addTo(this.map);
+        
+        L.easyPrint({
+            title: 'Save image',
+            position: 'topright',
+            elementsToHide: 'p, h2, .leaflet-control-zoom',
+            exportOnly: true 
+        }).addTo(this.map);
+
         console.log("Creando Map Component!!!! ");
         console.log(this.map);
-
-        /* var tooltip = L.tooltip({
-                        direction: 'left'
-                      });
-        tooltip.setLatLng(new L.LatLng(48.8583736, 2.2922926));
-        tooltip.addTo(this.map); */
     }
 
     return this.map;
@@ -65,13 +70,17 @@ getMap() {
 
 addBasemap(basemap : string) {
     if(basemap=='oceans') {
-        esri.basemapLayer('Oceans', {
-            maxZoom: 18
+        esri.basemapLayer('Streets', {//Oceans, Topographic
+            minZoom: 2,
+            maxZoom: 22,
+            maxNativeZoom: 19
         }).addTo(this.map);
     }
     else {
         esri.basemapLayer('Imagery', {
-            maxZoom: 18,
+            minZoom: 2,
+            maxZoom: 22,
+            maxNativeZoom: 19
         }).addTo(this.map);
     }
 }
@@ -143,12 +152,11 @@ addLayerToMapLayers(layerId: string, layerObject: any) {
  * Adds a WMS layer, requested to the specified WMS server.
  */
 private _addWMSLayerToMapLayers(wmsServer: string, wmsOptions: any, aMap: any) {
-    console.log(this.map + " url: " + wmsServer + " options " + JSON.stringify(wmsOptions) + " Mi mapa "+ aMap);
+    console.log(this.map + " url: " + wmsServer + " options " + wmsOptions + " Mi mapa "+ aMap);
     if (typeof (this.map) === 'undefined') {
         this.map = aMap;
     }
     const layer = L.tileLayer.wms(wmsServer, wmsOptions).addTo(this.map);
-    console.log(layer);
     layer.bringToFront();
     // Para centrar la imagen que se esté cargando. Hacerlo dinamico
     //this.map.setZoom(10);
@@ -177,6 +185,47 @@ addWMSLayerToMapLayers(wmsServer: string, layer: String, aMap: any) {
             },
             aMap);
 }
+
+/**
+ * Add Overlay - EYEM
+ * @param wmsServer
+ * @param bounds 
+ * @param imgOptions 
+ */
+private _addOverlayToMapLayer(wmsServer: string, bounds: number[][], aMap: any) {
+    console.log(" url: " + wmsServer + " bounds " + bounds + " Mapa "+ this.map);
+    
+    if (typeof (this.map) === 'undefined') {
+        this.map = aMap;
+        console.log(" MAPA "+ this.map);
+    }
+    // FUNCIONA!!
+    //let boundsPrueba = [[-33.8650, 151.2094], [-35.8650, 154.2094]];
+        
+    const layer = L.imageOverlay(wmsServer, bounds).addTo(this.map);
+    layer.bringToFront();
+    console.log(layer);
+
+    return layer;
+}
+
+addOverlayToMapLayer(wmsServer: string, bounds: number[][], aMap: any) {
+    return this._addOverlayToMapLayer(wmsServer, bounds, aMap);
+}
+
+//Mejor usar el otro metodo cuando es una imagen jpeg
+/* addOverlayGeoTiff(wmsServer: string, bounds: number[][], aMap: any) {
+    console.log(this.map + "parameters: " + wmsServer + " " + aMap);
+    if (typeof (this.map) === 'undefined') {
+        this.map = aMap;
+        //console.log(" MAPA "+ this.map);
+    }
+    let layer = geo.leafletGeotiff(wmsServer, bounds).addTo(this.map);
+    layer.bringToFront();
+    console.log(layer);
+
+    return layer;
+} */
 
 /**
  * Sets the style for a given group
@@ -258,12 +307,19 @@ addRectangleLayer(layerId: string, coordinates: any, isEditable?: boolean, color
     }
 }
 
+setValueOfMap(aMap: any) {
+    if (typeof (this.map) === 'undefined') {
+        this.map = aMap;
+    }
+}
+
 addPointLayer(layerId: string, coordinates: number[], color: string) {
     /* const point = L.point(coordinates)
     this.map.panBy(point);
     this.mapLayers.set(layerId, point); */
-    console.log("Desde addPointLayer " + this.map);
-    var point = L.circleMarker(coordinates, {
+    
+   //console.log("Desde addPointLayer " + this.map);
+    let point = L.circleMarker(coordinates, {
                                     radius : 4,
                                     fillColor : color,
                                     color : "#000",
@@ -271,7 +327,7 @@ addPointLayer(layerId: string, coordinates: number[], color: string) {
                                     opacity : 1,
                                     fillOpacity : 0.8
                                 }).addTo(this.map);
-    
+
     var popup = L.popup().setContent('<p>Coordinates: ' + coordinates + '<br />Velocity.</p>');
     point.bindPopup(popup);
     point.on('click', function(e) {
@@ -282,15 +338,42 @@ addPointLayer(layerId: string, coordinates: number[], color: string) {
 }
 
 addPolylineLayer(layerId: string, coordinates: number[][], colorLine: string) {
-    var polyline = L.polyline(coordinates, {color : colorLine,
+    let polyline = L.polyline(coordinates, {color : colorLine,
                                             weight: 3,
                                             opacity: 0.5,
                                             smoothFactor: 1}).addTo(this.map);
     this.mapLayers.set(layerId, polyline);
+    let myCenter = coordinates[0]; //new L.LatLng(41.178241, -8.596044);
+    this.map.setView(myCenter, 11);
 }
 
-addPopUp() {
+afterRender(result) {
+    return result;
+}
 
+afterExport(result) {
+return result;
+}
+
+exportLayerMap() {
+    /* let downloadOptions = {
+      container: this.map._container,
+      caption: {
+        text: caption,
+        font: '30px Arial',
+        fillStyle: 'black',
+        position: [100, 200]
+      },
+      exclude: ['.leaflet-control-zoom', '.leaflet-control-attribution'],
+      format: 'image/png',
+      fileName: 'Map.png',
+      afterRender: this.afterRender,
+      afterExport: this.afterExport
+    };
+    let promise = this.map.downloadExport(downloadOptions);
+    let data = promise.then(function (result) {
+      return result;
+    }); */
 }
 
 /**
@@ -333,6 +416,13 @@ drawPolygon(polygonColor?: string) {
     }
     this.map.editTools.startPolygon(undefined, {
         color: polygonColor
+    });
+}
+
+onChangeZoom() {
+    let myMap = this.getMap();
+    this.map.on('zoomend ', function(e) {
+        console.log("Level zoom: " + myMap.getZoom());
     });
 }
 

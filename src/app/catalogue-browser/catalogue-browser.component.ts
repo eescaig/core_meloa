@@ -44,6 +44,10 @@ export class CatalogueBrowserComponent implements OnInit, AfterViewInit {
     /* console.log("Obteniendo mapa con get desde catalogue browser");
     console.log(this.objectMap); */
   }
+  
+  /* onSaveMap() {
+    this.mapService.exportLayerMap();
+  } */
 
   onClickChangeBaseMap() {
     if(this.iconBaseMap==="map") {

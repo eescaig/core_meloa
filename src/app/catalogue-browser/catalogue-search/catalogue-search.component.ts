@@ -7,7 +7,7 @@ import { Search } from './../shared/models/search.model';
 import { CatalogueSimoceanService } from './../shared/services/catalogue-simocean.service';
 import { DatasetList } from './../shared/models/dataset-list.model';
 import { Observable } from 'rxjs';
-import { Component, OnInit, AfterViewInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewEncapsulation, Input } from '@angular/core';
 import { MatPaginator, MatTreeFlatDataSource, MatIconRegistry } from '@angular/material';
 
 @Component({
@@ -16,7 +16,7 @@ import { MatPaginator, MatTreeFlatDataSource, MatIconRegistry } from '@angular/m
   styleUrls: ['./catalogue-search.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class CatalogueSearchComponent implements OnInit, AfterViewInit {
+export class CatalogueSearchComponent implements OnInit {
   
   campains: Observable<DatasetList>;
   selectedCampain: string;
@@ -27,6 +27,7 @@ export class CatalogueSearchComponent implements OnInit, AfterViewInit {
   isDrawingEnabled = false;
   boundingBox: LatLng[];
   sessionStorage;
+  /* @Input() mapa: any; */
   
   constructor(private simoceanService: CatalogueSimoceanService, private mapService: MapService,
               iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
@@ -36,10 +37,6 @@ export class CatalogueSearchComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-  }
-
-  ngAfterViewInit() {
-    //console.log('AfterView of catalogue search');
   }
 
   onChangeCampains(value) {
@@ -214,62 +211,5 @@ export class CatalogueSearchComponent implements OnInit, AfterViewInit {
     
     return new Search(selectedOrg, tempStartDate, tempEndDate);
   }
-
-  /**
-   * Loads filter values stored in session storage
-   */
-  /* loadFilters() {
-    this.getCampainsList();
-    const startDate = this.loadFilterFromStorage('startDate');
-    const endDate = this.loadFilterFromStorage('endDate');
-    this.startDate = startDate && new Date(startDate);
-    this.endDate = endDate && new Date(endDate);
-    this.addFilterToSessionStorage('bbox', this.getBboxForSessionStorage());
-    this.boundingBox = this.loadFilterFromStorage('bbox');
-  } */
-
-  /**
-   * Checks if the session storage has an item that matches the given filter name
-   * and returns the parsed value if so.
-   *
-   * @param filterName The name of the filter to load from the storage
-   */
-  /* loadFilterFromStorage(filterName: string) {
-    if (sessionStorage.getItem(filterName) !== null && sessionStorage.getItem(filterName) !== 'undefined') {
-      return JSON.parse(sessionStorage.getItem(filterName));
-    }
-  } */
-  
-  /**
-   * Adds a filter to the session storage for persistence.
-   * If the value is null or undefined it will remove the filter from the storage.
-   *
-   * @param name The name of the filter to use in the session storage
-   * @param value The value to store in session
-   */
-  /* addFilterToSessionStorage(name: string, value: any) {
-    if (value !== null || value !== undefined) {
-      sessionStorage.setItem(name, JSON.stringify(value));
-    } else {
-      sessionStorage.removeItem(name);
-    }
-  } */
-
-  /**
-   * Generates a valid bounding box to put in storage.
-   */
-  /* getBboxForSessionStorage(): LatLng[] {
-    let bbox = null;
-    if (this.boundingBox) {
-      bbox = this.boundingBox.map(bboxCoords => {
-        return {
-          lng: bboxCoords.lng,
-          lat: bboxCoords.lat
-        };
-      });
-    }
-    return bbox;
-  } */
-
 
 }

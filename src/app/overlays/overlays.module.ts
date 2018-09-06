@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { DialogAddOverlayComponent } from './dialog-add-overlay/dialog-add-overlay.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MapModule } from './../shared/map/map.module';
+import { PapaParseModule } from 'ngx-papaparse';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { MapModule } from './../shared/map/map.module';
     FormsModule,
     ReactiveFormsModule,
     MeloaMaterialModule,
+    PapaParseModule,
     MapModule
   ],
   declarations: [

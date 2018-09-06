@@ -1,11 +1,11 @@
 .head-dialog {
     color: #d9232e;
-    font-weight: bold;
-    font-size: 17px;
+    /* font-weight: bold;
+    font-size: 17px; */
     font-family: Arial;
 }
 .dialog-font {
-    font-size: 17px !important;
+    font-size: 15px !important;
     font-weight: 400 !important;
     color:#232c65 !important;
     font-family: Arial !important;
@@ -16,6 +16,10 @@
 }
 .add-overlays-div {
     display: grid;
+}
+.dialog-nested-group {
+    font-weight: bold;
+    font-size: 17px;
 }
 .upload-overlay-buttom {
     background-color: rgba(210, 230, 246, 0.3);

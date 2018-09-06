@@ -1,15 +1,14 @@
-<span class="head-dialog">Add overlay</span><br>
+<h3 class="head-dialog">Add overlay</h3>
 <div>
-  <br>
   <mat-divider class="mat-divisor-overlay"></mat-divider>
   <br>
 </div>
 
-  <form novalidate [formGroup]="dialogInputForm" (ngSubmit)="onSubmit()">
+<form novalidate [formGroup]="dialogInputForm" (ngSubmit)="onSubmit()">
     <div class="add-overlays-div dialog-font">
       <mat-form-field appearance="fill">
         <mat-label class="dialog-font">Enter a name to Overlay</mat-label>
-        <input matInput type="text" formControlName="nameForm" >
+        <input matInput type="text" formControlName="nameForm" required>
         <mat-error *ngIf="name.hasError('required')"> 
             Name of Overlay is required
         </mat-error>
@@ -17,49 +16,48 @@
 
       <mat-form-field appearance="fill">
         <mat-label class="dialog-font">Enter a description to Overlay</mat-label>
-        <textarea matInput formControlName="descriptionForm"></textarea>
+        <textarea matInput formControlName="descriptionForm" required></textarea>
         <mat-error *ngIf="description.hasError('required')">
             Description of Overlay is required
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="fill"> 
-        <mat-label class="dialog-font">URL of Web Map Service</mat-label>
-        <input matInput type="url" formControlName="urlForm">
-        <mat-error *ngIf="url.hasError('required')">
-            URL of Web Map Service is required
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-          <mat-label class="dialog-font">Layer of Web Map Service</mat-label>
-          <input matInput type="text" formControlName="layerForm">
-          <mat-error *ngIf="layer.hasError('required')">
-              Layer is required
+      <div formGroupName="wms" class="add-overlays-div">
+        <mat-label class="dialog-nested-group">Add Image from Web Map Service</mat-label><br>
+        
+        <mat-form-field appearance="fill"> 
+          <mat-label class="dialog-font">URL</mat-label> <!-- {{url.hasError('required') && isUrlRequired()}} (change)="onChangeUrl($event)" -->
+          <input matInput type="url" formControlName="urlForm" [required]="isUrlRequired()">
+          <mat-error *ngIf="isUrlRequired() && (url.dirty || url.touched)">
+              URL of Web Map Service is required, when Layer have a value
           </mat-error>
-      </mat-form-field>
+        </mat-form-field>
 
-      <div>
-        <mat-label class="dialog-font">File Upload</mat-label><br>
-        <input #fileInput type="file" style="display: none;" (change)="onFileSelected($event)">
+        <mat-form-field appearance="fill">
+            <mat-label class="dialog-font">Layer</mat-label> <!-- {{layer.hasError('required') && isLayerRequired()}} (change)="onChangeLayer($event)" -->
+            <input matInput type="text" formControlName="layerForm" [required]="isLayerRequired()">
+            <mat-error *ngIf="isLayerRequired() && (layer.dirty || layer.touched)">
+                Layer is required, when URL have a value
+            </mat-error>
+        </mat-form-field>
+      </div>
+      <div formGroupName="overlay">
+        <mat-label class="dialog-nested-group">Upload a georeferenced image</mat-label><br>
+        <input #fileInput type="file" style="display: none;" accept="{{accept}}" (change)="onFileSelected($event)">
         <button mat-buttom type="button" class="upload-overlay-buttom" (click)="fileInput.click()">Pick File</button>
-        <button mat-buttom type="button" class="upload-overlay-buttom" (click)="onUpload()">Upload</button>
+        <button mat-buttom type="button" class="upload-overlay-buttom" (click)="onUploadLocal()">Upload</button>
         
       </div>
     </div>
-  
-    
-
-<div>
-    <br>
-    <mat-divider class="mat-divisor-overlay"></mat-divider>
-    <br>
-</div>
-<div class="dialog-font">
-  <button mat-button type="submit" class="add-overlay-buttoms" [disabled]="dialogInputForm.invalid" (click)="onAddClick()">ADD</button>
-  <button mat-button type="button" class="add-overlay-buttoms" (click)="onCancelClick()">CANCEL</button>
-</div>
-
+    <div>
+        <br>
+        <mat-divider class="mat-divisor-overlay"></mat-divider>
+        <br>
+    </div>
+    <div class="dialog-font">
+      <button mat-button type="submit" class="add-overlay-buttoms" [disabled]="dialogInputForm.invalid" (click)="onAddClick()">ADD</button>
+      <button mat-button type="button" class="add-overlay-buttoms" (click)="onCancelClick()">CANCEL</button>
+    </div>
 </form>
 
 

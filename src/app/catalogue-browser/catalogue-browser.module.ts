@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MapModule } from '../shared/map/map.module';
 import { CatalogueSearchComponent } from './catalogue-search/catalogue-search.component';
 import { CatalogueResultsComponent } from './catalogue-results/catalogue-results.component';
+import { PapaParseModule } from 'ngx-papaparse';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { CatalogueResultsComponent } from './catalogue-results/catalogue-results
     MapModule,
     CatalogueBrowserRoutingModule,
     FooterModule,
-    OverlaysModule
+    OverlaysModule,
+    PapaParseModule
   ],
   declarations: [
     CatalogueBrowserComponent,

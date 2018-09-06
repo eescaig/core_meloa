@@ -19,7 +19,7 @@
                     <mat-label>WAVYs</mat-label>
                 </ng-template>
                 <ng-template matTabContent>
-                    <app-catalogue-search></app-catalogue-search>
+                    <app-catalogue-search></app-catalogue-search> <!-- [mapa]="objectMap" -->
                 </ng-template>
             </mat-tab>
             <mat-tab>
@@ -59,19 +59,13 @@
             </li>
         </ul>
     </div>
-    <div class="div-right-buttons">
+    <!-- <div class="div-right-buttons">
         <ul class="map-ul">
-            <!-- <li>
-                <mat-icon matTooltip="Zoom in" [matTooltipPosition]="'right'">add_circle_outline</mat-icon>
-            </li>
-            <li>
-                <mat-icon matTooltip="Zoom out" [matTooltipPosition]="'right'">remove_circle_outline</mat-icon>
-            </li> -->
-            <li>
+            <li (click)="onSaveMap()">
                 <mat-icon class="save" mat-fab title="Save image">save</mat-icon>
             </li>
         </ul>
-    </div>
+    </div> -->
     </div>
 </div>
 
