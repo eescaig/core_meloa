@@ -19,21 +19,15 @@
                     <mat-label>WAVYs</mat-label>
                 </ng-template>
                 <ng-template matTabContent>
-                    <app-catalogue-search></app-catalogue-search> <!-- [mapa]="objectMap" -->
+                    <app-catalogue-search></app-catalogue-search>
                 </ng-template>
             </mat-tab>
             <mat-tab>
                 <ng-template mat-tab-label>
                     <mat-label>Overlays</mat-label>
-                    <!-- <mat-icon [color]="searchResults === undefined ? '' : 'primary'">
-                        list
-                    </mat-icon>
-                <span class="result-count-info" *ngIf="searchResults !== undefined">
-                    {{searchResults > 99 ? '99+' : searchResults}}
-                </span> -->
                 </ng-template>
                 <ng-template matTabContent>
-                    <app-overlays [mapa]="objectMap"></app-overlays>           
+                    <app-overlays [mapa]="mapCatalogue.getObjectMap()"></app-overlays> <!--  -->           
                 </ng-template>
             </mat-tab>
         </mat-tab-group>
@@ -44,28 +38,24 @@
     <app-map #mapCatalogue [basemap]="valueBaseMap"></app-map>
 
     <div class="external">
-    <div class="div-left-buttons">
-        <ul class="catalogue-buttons">
-            <li>
-                <button mat-fab (click)="cataloguesidenav.toggle()" title="Browse our catalogue">
-                    <mat-icon [@rotateIcon]="cataloguesidenav.opened ? 'open' : 'closed'">
-                        {{ cataloguesidenav.opened ? 'close' : 'search' }}</mat-icon>
-                </button>
-            </li>
-            <li>
-                <button mat-fab (click)="onClickChangeBaseMap()" title="{{toolTipBaseMap}} basemap">
-                    <mat-icon>{{iconBaseMap}}</mat-icon>
-                </button>
-            </li>
-        </ul>
-    </div>
-    <!-- <div class="div-right-buttons">
-        <ul class="map-ul">
-            <li (click)="onSaveMap()">
-                <mat-icon class="save" mat-fab title="Save image">save</mat-icon>
-            </li>
-        </ul>
-    </div> -->
+        <div class="div-left-buttons">
+            <ul class="catalogue-buttons">
+                <li>
+                    <button mat-fab (click)="cataloguesidenav.toggle()" title="Browse our catalogue">
+                        <mat-icon [@rotateIcon]="cataloguesidenav.opened ? 'open' : 'closed'">
+                            {{ cataloguesidenav.opened ? 'close' : 'search' }}</mat-icon>
+                    </button>
+                </li>
+                <li>
+                    <button mat-fab (click)="onClickChangeBaseMap()" title="{{toolTipBaseMap}} basemap">
+                        <mat-icon>{{iconBaseMap}}</mat-icon>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="div-right-buttons">
+            <app-legend></app-legend>
+        </div>
     </div>
 </div>
 

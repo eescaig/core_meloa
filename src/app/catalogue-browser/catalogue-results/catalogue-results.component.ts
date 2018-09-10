@@ -1,3 +1,4 @@
+import { LegendService } from './../../shared/legend/legend.service';
 import { MapComponent } from './../../shared/map/map.component';
 import { MapService } from './../../shared/map/map.service';
 import { Component, OnInit, Injectable, ViewEncapsulation, SimpleChanges } from '@angular/core';
@@ -94,7 +95,7 @@ export class FileDatabase {
   selector: 'app-catalogue-results',
   templateUrl: './catalogue-results.component.html',
   styleUrls: ['./catalogue-results.component.scss'],
-  providers: [FileDatabase, MapComponent],
+  providers: [FileDatabase, MapComponent, MapService, LegendService],
   encapsulation: ViewEncapsulation.None
 })
 export class CatalogueResultsComponent implements OnInit {
@@ -111,7 +112,9 @@ export class CatalogueResultsComponent implements OnInit {
 
   mapa : any;
 
-  constructor(private mapService: MapService, private mapComponent: MapComponent ,private papa: PapaParseService, database: FileDatabase) { 
+  constructor(private mapService: MapService, private mapComponent: MapComponent, private legengService: LegendService,
+              private papa: PapaParseService, database: FileDatabase) 
+  { 
     this.treeFlattener = new MatTreeFlattener(this.transformer, this._getLevel, this._isExpandable, this._getChildren);
     this.treeControl = new FlatTreeControl<FileFlatNode>(this._getLevel, this._isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
@@ -159,12 +162,11 @@ export class CatalogueResultsComponent implements OnInit {
       let reader : FileReader = new FileReader();
       reader.readAsText(selectedFile);
       reader.onload = (e: any) => {
-        //console.log('csv content', e.target.result);
         this.papa.parse(e.target.result, {
           header: true,
           skipEmptyLines: true,
           complete: (result, selectedFile) => {
-            console.log(result);
+            //console.log(result);
             this.dataList = result.data;
           }
         })
@@ -176,11 +178,15 @@ export class CatalogueResultsComponent implements OnInit {
     console.log("Checbox " + this.mapa);
     this.mapService.setValueOfMap(this.mapa);
     let latlngsPoly : number[][] = [];
+    let heights, velocities : number[] = [];
+
     if(event.checked) {
       //console.log(this.dataList);
       this.dataList.map(obj => { 
         //console.log(obj);
-        
+        this.legengService.assignHeight(Number.parseFloat(obj.height)); //heights.push(obj.height);
+        this.legengService.assignVelocity(Number.parseFloat(obj.speed)); //velocities.push(obj.speed);
+
         let latlng : number[] = [Number.parseFloat(obj.latitude), Number.parseFloat(obj.longitude)];
         latlngsPoly.push(latlng);
         let nameLayer : string = "point" + obj.record;
@@ -188,21 +194,14 @@ export class CatalogueResultsComponent implements OnInit {
         this.mapService.addPointLayer(nameLayer, latlng, "#ff7800");
         
       });
-      console.log(latlngsPoly);
-      this.mapService.addPolylineLayer("poly1", latlngsPoly, "#ff7800");
 
+      this.legengService.heights$.subscribe(height => console.log('height ' + height));
+      this.legengService.velocities$.subscribe(vel => console.log('vel ' + vel));
+
+      this.mapService.addPolylineLayer("poly1", latlngsPoly, "#ff7800");
+      // Mostrar el nivel de zoom del mapa
       this.mapService.onChangeZoom();
       
-     //this.mapService.addPolylineLayer("poly1", latlngs, "#ff7800");
-      /* this.mapService.addPointLayer("point1", [41.178241, -8.596044], "#ff7800", this.mapa);
-      this.mapService.addPointLayer("point2", [40.177969, -8.596083], "#ff7800", this.mapa);
-      this.mapService.addPointLayer("point3", [39.177969, -7.596048], "#ff7800", this.mapa); 
-      let latlngs = [
-        [41.178241, -8.596044],
-        [40.177969, -8.596083],
-        [39.177969, -7.596048]
-      ];
-      this.mapService.addPolylineLayer("poly1", latlngs, "#ff7800");*/
     }
     else {
 
@@ -214,11 +213,6 @@ export class CatalogueResultsComponent implements OnInit {
       this.mapService.removeLayerFromMap("poly1");
 
       this.mapService.onChangeZoom();
-      
-      /* this.mapService.removeLayerFromMap("point1");
-      this.mapService.removeLayerFromMap("point2");
-      this.mapService.removeLayerFromMap("point3");
-      this.mapService.removeLayerFromMap("poly1"); */
     }
   }
 

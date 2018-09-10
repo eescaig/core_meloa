@@ -21,7 +21,7 @@ export class FileUploadModel {
   selector: 'app-dialog-add-overlay',
   templateUrl: './dialog-add-overlay.component.html',
   styleUrls: ['./dialog-add-overlay.component.scss'],
-  providers: [MapService, MapComponent]
+  providers: [MapComponent]
 })
 export class DialogAddOverlayComponent implements OnInit {
   
@@ -181,7 +181,7 @@ export class DialogAddOverlayComponent implements OnInit {
 
   onAddClick() {
     //validations
-    //console.log(this.mapaOver);
+    console.log(this.mapaOver);
     let result : any;
     let bounds : number[][] = [];
     let corner1 : number[] = [Number.parseFloat("-17.580.000"), Number.parseFloat("-16.690.000")];

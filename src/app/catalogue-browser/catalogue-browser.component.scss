@@ -62,37 +62,9 @@
         }
       }
       .div-right-buttons {
-        .map-ul {
           position: absolute; 
-          top: 210px; 
+          bottom: 40px; 
           right: 45px;
-          list-style: none;
-          li {
-            padding: 5px 0;
-            mat-icon {
-              background:  rgba(245,245,245,.8);
-              color: black;
-              font-size: 40px;
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-            }
-            .save {
-              background:  rgba(245,245,245,.8);
-              color: black;
-              width: 40px;
-              height: 40px;
-              line-height: 40px;
-              border-radius: 50%;
-              font-size: 30px;
-              text-align: center !important;
-              &:hover {
-                background:  rgba(245,245,245,.65);
-                color: white;
-              }
-            }
-          }
-        }
       }
     }
 

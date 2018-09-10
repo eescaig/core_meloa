@@ -29,7 +29,7 @@ export class CatalogueBrowserComponent implements OnInit, AfterViewInit {
   valueBaseMap: string = "oceans";
   iconBaseMap: string = "satellite";
   toolTipBaseMap: string = "Satellite";
-  objectMap: any;
+  //objectMap: any;
 
   constructor(private mapService: MapService, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) { 
     iconRegistry.addSvgIcon('more-zoom', sanitizer.bypassSecurityTrustResourceUrl('assets/img/icons/more-zoom.svg'));
@@ -40,14 +40,10 @@ export class CatalogueBrowserComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.objectMap = this.mapComponent.getObjectMap();
+    //this.objectMap = this.mapComponent.getObjectMap();
     /* console.log("Obteniendo mapa con get desde catalogue browser");
     console.log(this.objectMap); */
   }
-  
-  /* onSaveMap() {
-    this.mapService.exportLayerMap();
-  } */
 
   onClickChangeBaseMap() {
     if(this.iconBaseMap==="map") {

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, HostListener, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, HostListener, Input } from '@angular/core';
 import { MapTooltipComponent } from './map-tooltip/map-tooltip.component';
 import { MapService } from './map.service';
 
@@ -21,7 +21,10 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.objectMap = this.mapService.createMap('map');
+    console.log('Componente Mapa ', this.objectMap);
     this.mapService.addBasemap(this.basemap);
+    this.mapService.setLeafletMapInstance(this.objectMap);
+    //this.mapService.createLegend(this.objectMap, this.mapService.setColorLegend(0));
   }
 
   getObjectMap() {

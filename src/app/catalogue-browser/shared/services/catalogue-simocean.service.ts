@@ -22,8 +22,6 @@ export class CatalogueSimoceanService {
     let packageListURL = this.apiBaseUrl + '/package_search?';
     const facetField = '&facet.field=organization&facet.field=groups&facet.field=tags&rows=40000';
     let addOrgs = "";
-    let addGroups = "";
-    let addTags = "";
     let startTime : string = "";
     let stopTime : string  = "";
     //http://catalogue.simocean.pt/api/3/action/package_search?fq=organization%3A%22ipma%22+groups%3A%22sea-wave-direction-swd%22+tags%3A%22Dire%C3%A7%C3%A3o+m%C3%A9dia+das+ondas%22&facet.field=organization&facet.field=groups&facet.field=tags

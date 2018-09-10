@@ -1,3 +1,4 @@
+import { LegendModule } from './../shared/legend/legend.module';
 import { FormsModule } from '@angular/forms';
 import { OverlaysModule } from './../overlays/overlays.module';
 import { FooterModule } from './../footer/footer.module';
@@ -26,7 +27,8 @@ import { PapaParseModule } from 'ngx-papaparse';
     CatalogueBrowserRoutingModule,
     FooterModule,
     OverlaysModule,
-    PapaParseModule
+    PapaParseModule,
+    LegendModule
   ],
   declarations: [
     CatalogueBrowserComponent,

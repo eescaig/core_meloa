@@ -1,0 +1,8 @@
+<form [formGroup]="selectForm">
+    <div>
+      <select class="custom-select" formControlName="selectControl"
+              (change)="onChangeSelect(select.value)">
+        <option [value]="item.key" *ngFor="let item of selectList">{{item.value}}</option>
+      </select>
+    </div>
+</form>
