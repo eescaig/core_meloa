@@ -1,3 +1,4 @@
+import { LegendService } from './legend.service';
 import { SelectValues } from './select-values';
 import { Component, OnInit } from '@angular/core';
 
@@ -16,14 +17,12 @@ export class LegendComponent implements OnInit {
 
   selectedValueLegend : number;
 
-  constructor() {}
+  constructor(public legengService : LegendService) {}
 
   ngOnInit() {}
   
   onChangeSelectLegend(event) {
     this.selectedValueLegend = event;
   }
-
-  
 
 }

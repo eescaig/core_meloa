@@ -10,15 +10,15 @@ import { MapService } from '../shared/map/map.service';
   providers: [MapService]
 })
 export class OverlaysComponent implements OnInit {
-  
+
   @Input() mapa: any;
   errorMessage : string = "";
 
   constructor(public dialog: MatDialog, private mapService: MapService) { }
 
   ngOnInit() {
-    this.mapService.leafletMap$.subscribe((map) => {this.mapa = map});
-    console.log("Overlay Component ", this.mapService.leafletMap$);
+    /* this.mapService.leafletMap$.subscribe((map) => {this.mapa = map});
+    console.log("Overlay Component ", this.mapService.leafletMap$); */
   }
 
   openDialog(): void {

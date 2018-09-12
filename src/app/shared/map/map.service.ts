@@ -1,4 +1,4 @@
-import { Subject, BehaviorSubject, Observable } from 'rxjs/index';
+import { Subject, BehaviorSubject } from 'rxjs/index';
 import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
 import 'leaflet-editable';
@@ -9,14 +9,11 @@ import { Injectable } from '@angular/core';
     providedIn: 'root'
 })
 export class MapService {
-
-  /* public colorRampSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
-  public colorRampObservable$: Observable<string[]> = this.colorRampSubject.asObservable(); */
   
   public map: any;
-    
-  private leafletMapInstance = new Subject<Object>();
-  public leafletMap$ = this.leafletMapInstance.asObservable();
+
+  public static leafletMapInstance : BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  //public leafletMap$ = this.leafletMapInstance.asObservable();
 
   private boundingBoxChangedSource = new Subject<any>();
   public boundingBoxChanged$ = this.boundingBoxChangedSource.asObservable();
@@ -39,7 +36,7 @@ createMap(mapContainer: string) : any {
         L.latLng(-90, -180), // Southwest
         L.latLng(90, 180)  // Northeast
     );
-
+    
     if (typeof (this.map) === 'undefined') {
         this.map = L.map(mapContainer, {
             editable: true,
@@ -49,22 +46,22 @@ createMap(mapContainer: string) : any {
             maxBounds: maxBounds,
             maxBoundsViscosity: 1.0
         }).setView([36, -9], 2);
-
+    
         L.control.zoom({
             position:'topright'
         }).addTo(this.map);
-        
+            
         L.easyPrint({
             title: 'Save image',
             position: 'topright',
             elementsToHide: 'p, h2, .leaflet-control-zoom',
             exportOnly: true 
         }).addTo(this.map);
-
+    
         /* console.log("Creando Map Component!!!! ");
-        console.log(this.map); */
+            console.log(this.map); */
     }
-
+    
     return this.map;
 }
 
@@ -84,113 +81,13 @@ addBasemap(basemap : string) {
         }).addTo(this.map);
     }
 }
-
-setLeafletMapInstance(aMap: Object) {
-    this.leafletMapInstance.next(aMap);
-}
-
-createLegend(aMap: any, colorLegend : string[]) {
-    let legend = L.control({position: 'bottomright'});
-    legend.onAdd = function (aMap) {
-        let div = L.DomUtil.create('div', 'info legend');
-        div.id = "div_legend";
-        let	grades = [0, 10, 20, 50, 100];
-        let	labels = [], from, to;
-        //this.colorLegend = ['#137fba', '#1a9641', '#ffffbf', '#e66101', '#ca0020'];
-        let valuesLegend = ['Temperature','Wave height','Wave Velocity'];
-
-        for (let i = 0; i < grades.length; i++) {
-            from = grades[i];
-            to = grades[i + 1];
-            labels.push("<img style=background:" + colorLegend[i] + "></img> " +
-            from + (to ? "&ndash;" + to : '+'));
-        }
-        
-        let html = '<div style="margin-top: 10px;"><select id="select_legend">';
-                    for (let i = 0; i < valuesLegend.length; i++) {
-                        html += '<option value="'+ i + '">' + valuesLegend[i] + '</option>'
-                    }
-            html +='</select></div>'
-        
-        div.innerHTML = labels.join('<br>') + html;
-        return div;
-    };
-    legend.addTo(aMap);
-        
-    let select_legend = L.DomUtil.get("select_legend");
-    L.DomEvent.addListener(select_legend, 'change', this.onChangeSelectLegend);
-
-    return legend;
-}
-
-/* changeColorRamp(rampa: string[]) {
-    this.colorRampSubject.next(rampa);
-}
-
-get colorRamp() {
-    return this.colorRampObservable$;
-} */
-
-onChangeSelectLegend(e) {
-    console.log("Evento onchange " + e.target.value);
-    let color = ['#137fba', '#1a9641', '#ffffbf', '#e66101', '#ca0020'];
-    if(Number.parseInt(e.target.value)===1) {
-        color = ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'];
-    }
-    else if(Number.parseInt(e.target.value)===2) {
-        color = ['#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
-    }
-    console.log(color);
-    let legend = L.DomUtil.get("div_legend");
-    console.log(legend);
-    // legend.remove();
     
-    // if (typeof (this.map) === 'undefined') {
-    //     this.map = this.getMap;
-    //     console.log(" MAPA "+ this.map);
-    // }
-    // // Volvemos a crear la leyenda
-    // let newLegend = L.control({position: 'bottomright'});
-    // newLegend.onAdd = function (map) {
-    //     let div = L.DomUtil.create('div', 'info legend');
-    //     div.id = "div_legend";
-    //     let	grades = [0, 10, 20, 50, 100];
-    //     let	labels = [], from, to;
-    //     //this.colorLegend = ['#137fba', '#1a9641', '#ffffbf', '#e66101', '#ca0020'];
-    //     let valuesLegend = ['Temperature','Wave height','Wave Velocity'];
-
-    //     for (let i = 0; i < grades.length; i++) {
-    //         from = grades[i];
-    //         to = grades[i + 1];
-    //         labels.push("<img style=background:" + color[i] + "></img> " +
-    //         from + (to ? "&ndash;" + to : '+'));
-    //     }
-        
-    //     let html = '<div style="margin-top: 10px;"><select id="select_legend">';
-    //                 for (let i = 0; i < valuesLegend.length; i++) {
-    //                     html += '<option value="'+ i + '">' + valuesLegend[i] + '</option>'
-    //                 }
-    //         html +='</select></div>'
-        
-    //     div.innerHTML = labels.join('<br>') + html;
-    //     return div;
-    // };
-
-    // newLegend.addTo(this.map);
-        
-    // let select_legend = L.DomUtil.get("select_legend");
-    // L.DomEvent.addListener(select_legend, 'change', this.onChangeSelectLegend);
-
-    // return newLegend;
+assignLeafletMapInstance(aMap: any) {
+    MapService.leafletMapInstance.next(aMap);
 }
 
-setColorLegend(value: number) {
-    switch(value) {
-        case 0: return ['#137fba', '#1a9641', '#ffffbf', '#e66101', '#ca0020'];
-        case 1: return ['#eff3ff', '#bdd7e7', '#6baed6', '#3182bd', '#08519c'];
-        case 2: return ['#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
-        default: return ['#137fba', '#1a9641', '#ffffbf', '#e66101', '#ca0020'];
-    }
+getLeafletMapInstance() {
+    return MapService.leafletMapInstance.asObservable();
 }
 
 /* getMap() {
@@ -519,7 +416,7 @@ drawPolygon(polygonColor?: string) {
 
 onChangeZoom() {
     let myMap : any;
-    this.leafletMap$.subscribe(map => myMap = map);
+    this.getLeafletMapInstance().subscribe(map => myMap = map);
     this.map.on('zoomend ', function(e) {
         console.log("Level zoom: " + myMap.getZoom());
     });

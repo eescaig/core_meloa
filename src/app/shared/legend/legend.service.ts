@@ -1,28 +1,32 @@
-import { Subject } from 'rxjs/index';
+import { BehaviorSubject, ReplaySubject } from 'rxjs/index';
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LegendService {
-  
-  private temperaturesSource = new Subject<Number>();
-  private heightsSource = new Subject<Number>();
-  private velocitiesSource = new Subject<Number>();
 
-  temperatures$ = this.temperaturesSource.asObservable();
-  heights$ = this.heightsSource.asObservable();
-  velocities$ = this.velocitiesSource.asObservable();
+  public static heightsSource: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(new Array<number>());
+  public static velocitiesSource: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(new Array<number>());
 
-  constructor() { }
-
-  assignHeight(height: Number) {
-    this.heightsSource.next(height);
-    console.log(this.heightsSource);
+  constructor() { 
+    //console.log('constructor!!!')
   }
 
-  assignVelocity(velocity: Number) {
-    this.velocitiesSource.next(velocity);
+  assignHeight(height: number[]) {
+    LegendService.heightsSource.next(height);
+  }
+
+  assignVelocity(velocity: number[]) {
+    LegendService.velocitiesSource.next(velocity);
+  }
+
+  getHeight() {
+    return LegendService.heightsSource.asObservable();
+  }
+
+  getVelocities() {
+    return LegendService.velocitiesSource.asObservable();
   }
 
 }

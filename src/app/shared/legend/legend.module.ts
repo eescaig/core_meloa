@@ -23,8 +23,7 @@ import { SelectComponent } from './select/select.component';
 })
 export class LegendModule { }
 
-
-export interface LegendRamp {
+/* export interface LegendRamp {
   title: string,
   subtitle?: string,
   values: RangeValues
@@ -44,4 +43,4 @@ let legend: LegendRamp = {
 let values1: RangeValues = {
   1: ['235'],
   2: ['1','2','34']
-}
+} */

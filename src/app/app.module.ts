@@ -13,7 +13,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { MeloaMaterialModule } from './meloa-material/meloa-material.module';
 
 
-
 const meloaRoutes: Routes = [
   { path: '', redirectTo: '/catalogue', pathMatch: 'full' },
   { path: '',  component: AppComponent }

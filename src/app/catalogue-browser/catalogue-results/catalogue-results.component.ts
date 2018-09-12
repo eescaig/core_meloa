@@ -1,7 +1,7 @@
 import { LegendService } from './../../shared/legend/legend.service';
 import { MapComponent } from './../../shared/map/map.component';
 import { MapService } from './../../shared/map/map.service';
-import { Component, OnInit, Injectable, ViewEncapsulation, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Injectable, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlattener, MatTreeFlatDataSource, PageEvent, MatCheckboxChange } from '@angular/material';
 import { BehaviorSubject, Observable, of } from 'rxjs';
@@ -98,7 +98,7 @@ export class FileDatabase {
   providers: [FileDatabase, MapComponent, MapService, LegendService],
   encapsulation: ViewEncapsulation.None
 })
-export class CatalogueResultsComponent implements OnInit {
+export class CatalogueResultsComponent implements OnInit, AfterViewInit {
   
   treeControl: FlatTreeControl<FileFlatNode>;
   treeFlattener: MatTreeFlattener<FileNode, FileFlatNode>;
@@ -111,8 +111,9 @@ export class CatalogueResultsComponent implements OnInit {
   dataList : any;
 
   mapa : any;
+  heights : number[] = [];
 
-  constructor(private mapService: MapService, private mapComponent: MapComponent, private legengService: LegendService,
+  constructor(private mapService: MapService, private legengService: LegendService,
               private papa: PapaParseService, database: FileDatabase) 
   { 
     this.treeFlattener = new MatTreeFlattener(this.transformer, this._getLevel, this._isExpandable, this._getChildren);
@@ -141,20 +142,21 @@ export class CatalogueResultsComponent implements OnInit {
   hasChild = (_: number, _nodeData: FileFlatNode) => _nodeData.expandable;
 
   ngOnInit() {
-    //console.log("Result component ");
+    this.legengService.assignHeight(this.heights);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
-    this.mapService.onChangeZoom();
+  ngAfterViewInit() {
+    this.mapService.getLeafletMapInstance()
+                   .subscribe((map) => { 
+                                 this.mapa = map
+                                 console.log('ngAfterViewInit Result component ', map);
+                               });
   }
 
   onFileSelected(event) {
     this.selectedFile = <File> event.target.files[0];
     this.fileProcessing(this.selectedFile);
-
-    this.mapa = this.mapComponent.getObjectMap();
+    
   }
 
   fileProcessing(selectedFile: File) {
@@ -175,43 +177,42 @@ export class CatalogueResultsComponent implements OnInit {
   }
 
   onChangeCheckbox(event: MatCheckboxChange, type: any) {
-    console.log("Checbox " + this.mapa);
+    
     this.mapService.setValueOfMap(this.mapa);
     let latlngsPoly : number[][] = [];
-    let heights, velocities : number[] = [];
+    
+    let velocities : number[] = [];
 
     if(event.checked) {
       //console.log(this.dataList);
-      this.dataList.map(obj => { 
-        //console.log(obj);
-        this.legengService.assignHeight(Number.parseFloat(obj.height)); //heights.push(obj.height);
-        this.legengService.assignVelocity(Number.parseFloat(obj.speed)); //velocities.push(obj.speed);
-
-        let latlng : number[] = [Number.parseFloat(obj.latitude), Number.parseFloat(obj.longitude)];
-        latlngsPoly.push(latlng);
-        let nameLayer : string = "point" + obj.record;
-        
-        this.mapService.addPointLayer(nameLayer, latlng, "#ff7800");
-        
+      this.dataList.map(obj => {
+          this.heights.push(Number.parseFloat(obj.height));
+          velocities.push(Number.parseFloat(obj.speed));
+  
+          let latlng : number[] = [Number.parseFloat(obj.latitude), Number.parseFloat(obj.longitude)];
+          latlngsPoly.push(latlng);
+          let nameLayer : string = "point" + obj.record;
+          
+          this.mapService.addPointLayer(nameLayer, latlng, "#ff7800");
       });
-
-      this.legengService.heights$.subscribe(height => console.log('height ' + height));
-      this.legengService.velocities$.subscribe(vel => console.log('vel ' + vel));
+      // Asignar variables para la leyenda
+      this.legengService.assignHeight(this.heights);
+      this.legengService.assignVelocity(velocities);
 
       this.mapService.addPolylineLayer("poly1", latlngsPoly, "#ff7800");
       // Mostrar el nivel de zoom del mapa
       this.mapService.onChangeZoom();
+     /*  this.legengService.getHeight().subscribe((height) => console.log('height ' + height));
+      this.legengService.getVelocities().subscribe((vel) => {console.log('vel ' + vel)}); */
       
     }
     else {
-
       this.dataList.map(obj => { 
-        //console.log(obj);
-        let nameLayer : string = "point" + obj.record;
-        this.mapService.removeLayerFromMap(nameLayer);
+          //console.log(obj);
+          let nameLayer : string = "point" + obj.record;
+          this.mapService.removeLayerFromMap(nameLayer);
       });
-      this.mapService.removeLayerFromMap("poly1");
-
+      this.mapService.removeLayerFromMap("poly1"); 
       this.mapService.onChangeZoom();
     }
   }

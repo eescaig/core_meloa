@@ -16,7 +16,7 @@ import { MatPaginator, MatTreeFlatDataSource, MatIconRegistry } from '@angular/m
   styleUrls: ['./catalogue-search.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class CatalogueSearchComponent implements OnInit, AfterViewInit {
+export class CatalogueSearchComponent implements OnInit {
   
   campains: Observable<DatasetList>;
   selectedCampain: string;
@@ -27,7 +27,7 @@ export class CatalogueSearchComponent implements OnInit, AfterViewInit {
   isDrawingEnabled = false;
   boundingBox: LatLng[];
   sessionStorage;
-  _mapa: any;
+  /* @Input() mapa: any; */
   
   constructor(private simoceanService: CatalogueSimoceanService, private mapService: MapService,
               iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
@@ -38,16 +38,6 @@ export class CatalogueSearchComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
   }
-
-  ngAfterViewInit() {
-    this.mapa;
-  }
-  
-  @Input()
-  set mapa(aMapa: any) {
-    this._mapa = aMapa;
-  }
-
 
   onChangeCampains(value) {
     this.selectedCampain = value;
