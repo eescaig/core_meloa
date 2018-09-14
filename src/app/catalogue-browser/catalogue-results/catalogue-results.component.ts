@@ -6,6 +6,7 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlattener, MatTreeFlatDataSource, PageEvent, MatCheckboxChange } from '@angular/material';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { PapaParseService } from 'ngx-papaparse';
+import { Wavy } from '../shared/models/wavy.model';
 
 export class FileNode {
   children: FileNode[];
@@ -108,10 +109,14 @@ export class CatalogueResultsComponent implements OnInit, AfterViewInit {
   currentPage: number;
 
   selectedFile: File = null;
-  dataList : any;
-
+  dataList : any = null;
+  
+  // Variables to use in the creation of legend
   mapa : any;
   heights : number[] = [];
+  velocities : number[] = [];
+  latlngsPoly : number[][] = [];
+  wavysArray : Wavy[] = [];
 
   constructor(private mapService: MapService, private legengService: LegendService,
               private papa: PapaParseService, database: FileDatabase) 
@@ -149,14 +154,13 @@ export class CatalogueResultsComponent implements OnInit, AfterViewInit {
     this.mapService.getLeafletMapInstance()
                    .subscribe((map) => { 
                                  this.mapa = map
-                                 console.log('ngAfterViewInit Result component ', map);
+                                 //console.log('ngAfterViewInit Result component ', map);
                                });
   }
 
   onFileSelected(event) {
     this.selectedFile = <File> event.target.files[0];
     this.fileProcessing(this.selectedFile);
-    
   }
 
   fileProcessing(selectedFile: File) {
@@ -165,56 +169,92 @@ export class CatalogueResultsComponent implements OnInit, AfterViewInit {
       reader.readAsText(selectedFile);
       reader.onload = (e: any) => {
         this.papa.parse(e.target.result, {
-          header: true,
-          skipEmptyLines: true,
-          complete: (result, selectedFile) => {
-            //console.log(result);
-            this.dataList = result.data;
-          }
+            header: true,
+            skipEmptyLines: true,
+            complete: (result) => {
+                //console.log(result);
+                this.dataList = result.data;
+    
+                this.setArraysToShareWithLegend();
+    
+                // Asignar variables para la leyenda
+                this.legengService.assignHeight(this.heights);
+                this.legengService.assignVelocity(this.velocities);
+                this.legengService.assignWavys(this.wavysArray);
+            }
         })
       };
     }
   }
 
+  isFileNotLoaded() {
+    return this.dataList==null && this.selectedFile==null;
+  }
+  
+  /**
+   * Event onChange of WAVYs.
+   * @param event 
+   * @param type 
+   */
   onChangeCheckbox(event: MatCheckboxChange, type: any) {
     
     this.mapService.setValueOfMap(this.mapa);
-    let latlngsPoly : number[][] = [];
     
-    let velocities : number[] = [];
-
     if(event.checked) {
-      //console.log(this.dataList);
-      this.dataList.map(obj => {
-          this.heights.push(Number.parseFloat(obj.height));
-          velocities.push(Number.parseFloat(obj.speed));
-  
-          let latlng : number[] = [Number.parseFloat(obj.latitude), Number.parseFloat(obj.longitude)];
-          latlngsPoly.push(latlng);
-          let nameLayer : string = "point" + obj.record;
-          
-          this.mapService.addPointLayer(nameLayer, latlng, "#ff7800");
-      });
-      // Asignar variables para la leyenda
-      this.legengService.assignHeight(this.heights);
-      this.legengService.assignVelocity(velocities);
-
-      this.mapService.addPolylineLayer("poly1", latlngsPoly, "#ff7800");
+      let scale : any;
+      let selectedValue : number;
+      
+      this.legengService.getScaleObject().subscribe(sc => {scale = sc; console.log(sc(56.700))});
+      this.legengService.getValueLegend().subscribe(val => {selectedValue = val; console.log('Value ', val)});
+      // Points to paint
+      this.legengService.addPolylineToLayer(this.latlngsPoly, selectedValue);
+      this.legengService.addPointsToLayer(this.wavysArray, scale, selectedValue);
+      this.mapService.setZoomToLayer(this.latlngsPoly[0], 11);
+      
       // Mostrar el nivel de zoom del mapa
       this.mapService.onChangeZoom();
-     /*  this.legengService.getHeight().subscribe((height) => console.log('height ' + height));
-      this.legengService.getVelocities().subscribe((vel) => {console.log('vel ' + vel)}); */
-      
     }
     else {
-      this.dataList.map(obj => { 
-          //console.log(obj);
-          let nameLayer : string = "point" + obj.record;
-          this.mapService.removeLayerFromMap(nameLayer);
-      });
-      this.mapService.removeLayerFromMap("poly1"); 
+      this.legengService.removePoints(this.wavysArray);
+      this.legengService.removePolyline();
       this.mapService.onChangeZoom();
     }
   }
+
+  /* private addPointsToLayer(wavysArray : Wavy[], scale: any, value: number) {
+    console.log(wavysArray);
+    if (wavysArray!==undefined) {
+      wavysArray.map(wavy => {
+        let property = value==1 ? wavy.height : (value==2 ? wavy.speed : wavy.temperature);
+        let color = scale(property)
+        console.log(color);
+        this.mapService.addPointLayer(wavy.id, wavy.coordinates, color);
+      });
+    }
+  } */
+
+  private setArraysToShareWithLegend() {
+    //console.log(this.dataList);
+    if (this.dataList!==null) {
+        this.dataList.map(obj => {
+          this.heights.push(Number.parseFloat(obj.height));
+          this.velocities.push(Number.parseFloat(obj.speed));
+    
+          let latlng : number[] = [Number.parseFloat(obj.latitude), Number.parseFloat(obj.longitude)];
+          this.latlngsPoly.push(latlng);
+          let nameLayer : string = "point" + obj.record;
+          
+          this.wavysArray.push(new Wavy(nameLayer, latlng, obj.second, obj.height, obj.speed));
+      });
+    }
+  }
+  
+  /* private removePointsToLayer() {
+    this.dataList.map(obj => { 
+      //console.log(obj);
+      let nameLayer : string = "point" + obj.record;
+      this.mapService.removeLayerFromMap(nameLayer);
+    });
+  } */
 
 }

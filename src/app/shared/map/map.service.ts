@@ -1,3 +1,4 @@
+import { Wavy } from './../../catalogue-browser/shared/models/wavy.model';
 import { Subject, BehaviorSubject } from 'rxjs/index';
 import * as L from 'leaflet';
 import * as esri from 'esri-leaflet';
@@ -329,13 +330,13 @@ setValueOfMap(aMap: any) {
     }
 }
 
-addPointLayer(layerId: string, coordinates: number[], color: string) {
+addPointLayer(wavy: Wavy, color: string) {
     /* const point = L.point(coordinates)
     this.map.panBy(point);
     this.mapLayers.set(layerId, point); */
     
    //console.log("Desde addPointLayer " + this.map);
-    let point = L.circleMarker(coordinates, {
+    let point = L.circleMarker(wavy.coordinates, {
                                     radius : 4,
                                     fillColor : color,
                                     color : "#000",
@@ -344,13 +345,16 @@ addPointLayer(layerId: string, coordinates: number[], color: string) {
                                     fillOpacity : 0.8
                                 }).addTo(this.map);
 
-    var popup = L.popup().setContent('<p>Coordinates: ' + coordinates + '<br />Velocity.</p>');
+    var popup = L.popup().setContent('<p>Location coordinates: ' + wavy.coordinates + '<br/>'
+                                     +'Temperature: ' + wavy.temperature + '<br/>'
+                                     +'Wave Height: ' + wavy.height + '<br/>'
+                                     +'Velocity: ' + wavy.speed + '</p>');
     point.bindPopup(popup);
     point.on('click', function(e) {
         
     });
 
-    this.mapLayers.set(layerId, point);
+    this.mapLayers.set(wavy.id, point);
 }
 
 addPolylineLayer(layerId: string, coordinates: number[][], colorLine: string) {
@@ -359,8 +363,12 @@ addPolylineLayer(layerId: string, coordinates: number[][], colorLine: string) {
                                             opacity: 0.5,
                                             smoothFactor: 1}).addTo(this.map);
     this.mapLayers.set(layerId, polyline);
-    let myCenter = coordinates[0]; //new L.LatLng(41.178241, -8.596044);
-    this.map.setView(myCenter, 11);
+    /* let myCenter = coordinates[0];
+    this.map.setView(myCenter, 11); */
+}
+
+setZoomToLayer(coordinates: number[], zoom: number) {
+    this.map.setView(coordinates, zoom);
 }
 
 afterRender(result) {
@@ -418,7 +426,7 @@ onChangeZoom() {
     let myMap : any;
     this.getLeafletMapInstance().subscribe(map => myMap = map);
     this.map.on('zoomend ', function(e) {
-        console.log("Level zoom: " + myMap.getZoom());
+        //console.log("Level zoom: " + myMap.getZoom());
     });
 }
 

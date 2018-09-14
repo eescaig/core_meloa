@@ -1,13 +1,16 @@
 <div>
+  <mat-error class="error-upload" *ngIf="isFileNotLoaded()">
+      Please upload a csv file, before to select a checkbox
+  </mat-error>
   <mat-label style="padding-left: 15px;">File Upload</mat-label>
-  <input #fileUpWavy type="file" style="display: none;" (change)="onFileSelected($event)">
-  <button mat-buttom type="button" class="upload-buttom" (click)="fileUpWavy.click()">Pick File</button>
+  <input #fileUpWavy type="file" style="display: none;" (change)="onFileSelected($event)" required>
+  <button #btonFileUp mat-buttom type="button" class="upload-buttom" (click)="fileUpWavy.click()">Pick File</button>
 </div><br> 
 
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
     <button mat-icon-button disabled></button>
-    <mat-checkbox color="primary" (change)="onChangeCheckbox($event, node.type)">{{node.filename}}</mat-checkbox>
+    <mat-checkbox color="primary" [disabled]="isFileNotLoaded()" (change)="onChangeCheckbox($event, node.type)">{{node.filename}}</mat-checkbox>
   </mat-tree-node>
 
   <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>

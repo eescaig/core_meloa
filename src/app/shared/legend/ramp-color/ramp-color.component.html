@@ -1,9 +1,9 @@
 
 <div class="info">
   <div class="legend" *ngFor="let g of grades; index as i; last as isLast" (change)=ngOnChanges()>
-    <mat-label>
+    <mat-label *ngIf="!isLast">
       <img [ngStyle]="{background:colorRamp[i]}"> 
-        {{g}} <span *ngIf="!isLast"> - {{grades[i + 1]}}</span>
+        {{g}} - {{grades[i + 1]}}
     </mat-label>
   </div>
 </div>

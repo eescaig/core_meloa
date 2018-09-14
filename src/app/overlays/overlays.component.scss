@@ -1,7 +1,7 @@
 .search-overlays-div {
     display: inline-flex;
 }
-.search-icon {
+.search-overlays-icon {
     margin-left: 20px;
     margin-top: 20px;
 }
@@ -9,11 +9,11 @@
     width: 100% !important;
     margin-left: 5px;
 }
-.search-label {
+.search-overlays-label {
     font-size: 17px !important;
     font-weight: 400 !important;
     color:#232c65 !important;
-    font-family: Arial !important;
+    /* font-family: Arial !important; */
 }
 .add-overlays-buttom {
     background-color: rgba(210, 230, 246, 0.3);

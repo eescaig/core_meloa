@@ -1,13 +1,13 @@
 import { LegendService } from './legend.service';
 import { SelectValues } from './select-values';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-legend',
   templateUrl: './legend.component.html',
   styleUrls: ['./legend.component.scss']
 })
-export class LegendComponent implements OnInit {
+export class LegendComponent implements OnInit, OnChanges {
   
   valuesSelect : SelectValues[] = [
       {key:0, value:'Temperature'},
@@ -19,10 +19,14 @@ export class LegendComponent implements OnInit {
 
   constructor(public legengService : LegendService) {}
 
-  ngOnInit() {}
+  ngOnInit() { }
+  
+  // PRUEBA
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('Leyenda ', changes);
+  }
   
   onChangeSelectLegend(event) {
     this.selectedValueLegend = event;
   }
-
 }
